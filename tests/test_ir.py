@@ -60,7 +60,7 @@ attribute_base = Attribute(
     is_static=False,
     is_private=False,
     readonly=False,
-    type=[]
+    type=[],
 )
 attr_dict = {k: v for k, v in getmembers(attribute_base) if not k.startswith("_")}
 
@@ -78,7 +78,7 @@ function_base = Function(
     is_async=False,
     params=[],
     exceptions=[],
-    returns=[]
+    returns=[],
 )
 func_dict = {k: v for k, v in getmembers(function_base) if not k.startswith("_")}
 

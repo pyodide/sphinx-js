@@ -255,7 +255,7 @@ misleadingly under an "Arguments" heading. Still, it's better than nothing
 until we can do it properly.
 
 If you are using typedoc, it also is possible to destructure keyword arguments
-by using the `@destructure` tag::
+by using the ``@destructure`` tag::
 
     /**
     * @param options
@@ -446,7 +446,7 @@ Typescript: Cross references
 ----------------------------
 
 Typescript types will be converted to cross references. To render cross
-references, you can define a hook in ``conf.py`` called `ts_type_xref_formatter`. It
+references, you can define a hook in ``conf.py`` called ``ts_type_xref_formatter``. It
 should take two arguments: the first argument is the sphinx confix, and the
 second is an ``sphinx_js.ir.TypeXRef`` object. This has a ``name`` field and two
 variants:
@@ -465,7 +465,7 @@ place of the type. For example:
             name = rst.escape(xref.name)
             return f":js:{xref.kind}:`{name}`"
         else:
-            # Otherwise, don't insert a xref 
+            # Otherwise, don't insert a xref
             return xref.name
 
 
@@ -495,20 +495,20 @@ Configuration Reference
   If using TypeDoc, specify the path of ``tsconfig.json`` file
 
 ``ts_type_xref_formatter``
-  A function for formatting typescript type cross referenes. See the
+  A function for formatting typescript type cross references. See the
   "Typescript: Cross references" section below.
 
 ``ts_type_bold``
-  Make all typescript types bold if `true`.
+  Make all typescript types bold if ``true``.
 
 ``ts_sphinx_js_config``
   A link to a typescript config file.
 
-The `ts_sphinx_js_config` file
+The ``ts_sphinx_js_config`` file
 ------------------------------
 
 This file should be a typescript module. It's executed in a context where it can
-import `typedoc` and `sphinx_js`. These functions take TypeDoc IR objects as
+import ``typedoc`` and ``sphinx_js``. These functions take TypeDoc IR objects as
 arguments. Since the TypeDoc IR is unstable, this config may often break when
 switching TypeDoc versions. However, these hooks are very powerful so using them
 may be worthwhile anyways. This API is experimental and may change in the
@@ -522,7 +522,7 @@ functions::
 * ``shouldDestructureArg: (param: ParameterReflection) => boolean``
 
   This function takes a ``ParameterReflection`` and decides if it should be
-  destructured. If so, it's equivalent to putting a `@destructure` tag for the
+  destructured. If so, it's equivalent to putting a ``@destructure`` tag for the
   argument. For example:
 
   .. code_block:: ts
@@ -544,7 +544,7 @@ functions::
   changes.
 
   For example, this ``postConvert`` hook removes the constructor from classes marked with
-  `@hideconstructor`.
+  ``@hideconstructor``.
 
   .. code_block:: ts
 
@@ -556,7 +556,7 @@ functions::
       }
     }
 
-  To use it, you'll also need to add a tag defintion for `@hideconstructor` to your `tsdoc.json` file:
+  To use it, you'll also need to add a tag definition for ``@hideconstructor`` to your ``tsdoc.json`` file:
 
   .. code_block:: json
 
@@ -652,7 +652,7 @@ Version History
 ===============
 
 5.0.0: (Unreleased)
-  * Droped support for Python 3.9 (pyodide/sphinx-js-fork#7)
+  * Dropped support for Python 3.9 (pyodide/sphinx-js-fork#7)
   * Dropped support for typedoc 0.15, added support for typedoc 0.25--0.28
    (pyodide/sphinx-js-fork#11, pyodide/sphinx-js-fork#22,
     pyodide/sphinx-js-fork#31, pyodide/sphinx-js-fork#39,
@@ -665,7 +665,7 @@ Version History
     (pyodide/sphinx-js-fork#25)
   * Only monkeypatch Sphinx classes when sphinx_js extension is used
     (pyodide/sphinx-js-fork#27)
-  * Allow using installation of ``typedoc`` or ``jsdoc`` from `node_modules`
+  * Allow using installation of ``typedoc`` or ``jsdoc`` from ``node_modules``
     instead of requiring global install. (pyodide/sphinx-js-fork#33)
   * Handle markdown style codepens correctly in typedoc comments.
     (pyodide/sphinx-js-fork#47)
@@ -697,7 +697,7 @@ Version History
   * Fixed crash when objects are reexported. (pyodide/sphinx-js-fork#126)
   * Added ``jsdoc_tsconfig_path`` which can specify the path to the
     ``tsconfig.json`` file that should be used. (pyodide/sphinx-js-fork#116)
-  * Added a `js:interface` directive (pyodide/sphinx-js-fork#138).
+  * Added a ``js:interface`` directive (pyodide/sphinx-js-fork#138).
   * Removed parentheses from xrefs to classes (pyodide/sphinx-js-fork#155).
   * Added a ``:js:typealias:`` directive (pyodide/sphinx-js-fork#156).
   * Added rendering for conditional, indexed access, inferred, mapped, optional,
@@ -750,7 +750,7 @@ Version History
 
 3.1.1: (March 23rd, 2021)
   * Rewrite large parts of the suffix tree that powers path lookup. This fixes
-    several crasher.
+    several crashes.
 
 3.1: (September 10th, 2020)
   * Re-architect language analysis. There is now a well-documented intermediate
