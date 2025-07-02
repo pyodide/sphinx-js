@@ -28,8 +28,15 @@ def tests(session: Session) -> None:
 @nox.session(python=["3.12"])
 @nox.parametrize("typedoc", ["0.25", "0.26", "0.27", "0.28"])
 def test_typedoc(session: Session, typedoc: str) -> None:
+    # Typecheck
+    with session.chdir("sphinx_js/js"):
+        session.run("npm", "i", f"typedoc@{typedoc}", external=True)
+        session.run("npm", "i", external=True)
+        session.run("npx", "tsc", external=True)
+
     # Install python dependencies
     session.install(".[test]")
+
     venvroot = Path(session.bin).parent
     node_modules = (venvroot / "node_modules").resolve()
     node_modules.mkdir()
