@@ -55,7 +55,7 @@ jobs:
       fail-fast: false
       matrix:
         python-version: ["3.12"]
-        typedoc-version: ["0.25", "0.26", "0.27"]
+        typedoc-version: ["0.25", "0.26", "0.27", "0.28"]
 
     name: Python ${{ matrix.python-version}} + typedoc ${{ matrix.typedoc-version }}
     steps:
