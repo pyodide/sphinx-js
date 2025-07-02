@@ -9,7 +9,7 @@ PROJECT_ROOT = Path(__file__).parent
 
 @nox.session(python=["3.10", "3.11", "3.12", "3.13"])
 def tests(session: Session) -> None:
-    session.install("-r", ".[test]")
+    session.install(".[test]")
     venvroot = Path(session.bin).parent
     (venvroot / "node_modules").mkdir()
     with session.chdir(venvroot):
@@ -29,7 +29,7 @@ def tests(session: Session) -> None:
 @nox.parametrize("typedoc", ["0.25", "0.26", "0.27", "0.28"])
 def test_typedoc(session: Session, typedoc: str) -> None:
     # Install python dependencies
-    session.install("-r", ".[test]")
+    session.install(".[test]")
     venvroot = Path(session.bin).parent
     node_modules = (venvroot / "node_modules").resolve()
     node_modules.mkdir()
@@ -68,7 +68,7 @@ def test_typedoc(session: Session, typedoc: str) -> None:
 @nox.session(python=["3.12"])
 def test_sphinx_6(session: Session) -> None:
     session.install("sphinx<7")
-    session.install("-r", ".[test]")
+    session.install(".[test]")
     venvroot = Path(session.bin).parent
     (venvroot / "node_modules").mkdir()
     with session.chdir(venvroot):
