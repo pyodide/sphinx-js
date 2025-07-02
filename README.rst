@@ -32,7 +32,7 @@ Setup
 
         npm install typedoc@0.27
 
-  JSDoc 3.6.3 and 4.0.0 and TypeDoc 0.27 are known to work.
+  JSDoc 3.6.3 and 4.0.0 and TypeDoc 0.25, 0.26, and 0.27 are known to work.
 
 
 2. Install sphinx-js, which will pull in Sphinx itself as a dependency::
@@ -248,6 +248,25 @@ result will be styled as a function, and ``@property`` tags will fall
 misleadingly under an "Arguments" heading. Still, it's better than nothing
 until we can do it properly.
 
+If you are using typedoc, it also is possible to destructure keyword arguments
+by using the `@destructure` tag::
+
+    /**
+    * @param options
+    * @destructure options
+    */
+    function f({x , y } : {
+        /** The x value */
+        x : number,
+        /** The y value */
+        y : string
+    }){ ... }
+
+will be documented like::
+
+    options.x (number) The x value
+    options.y (number) The y value
+
 autoclass
 ---------
 
@@ -401,6 +420,33 @@ or ``js:class`` and use the class's full (but dotted) path when you do::
 Unfortunately, Sphinx's ``~`` syntax doesn't work in these spots, so users will
 see the full paths in the documentation.
 
+Typescript: Cross references
+----------------------------
+
+Typescript types will be converted to cross references. To render cross
+references, you can define a hook in ``conf.py`` called `ts_type_xref_formatter`. It
+should take two arguments: the first argument is the sphinx confix, and the
+second is an ``sphinx_js.ir.TypeXRef`` object. This has a ``name`` field and two
+variants:
+
+* a ``sphinx_js.ir.TypeXRefInternal`` with fields ``path`` and ``kind``
+* a ``sphinx_js.ir.TypeXRefExternal`` with fields ``name``, ``package``,
+``sourcefilename`` and ``qualifiedName``
+
+The return value should be restructured text that you wish to be inserted in
+place of the type. For example:
+
+.. code-block:: python
+
+    def ts_xref_formatter(config, xref):
+        if isinstance(xref, TypeXRefInternal):
+            name = rst.escape(xref.name)
+            return f":js:{xref.kind}:`{name}`"
+        else:
+            # Otherwise, don't insert a xref 
+            return xref.name
+
+
 Configuration Reference
 -----------------------
 
@@ -504,6 +550,57 @@ See ``CONTRIBUTORS`` for details.
 
 Version History
 ===============
+
+5.0.0: (Unreleased)
+  * Droped support for Python 3.9 (pyodide/sphinx-js-fork#7)
+  * Dropped support for typedoc 0.15, added support for typedoc 0.25, 0.26, and
+    0.27 (pyodide/sphinx-js-fork#11, pyodide/sphinx-js-fork#22,
+    pyodide/sphinx-js-fork#31, pyodide/sphinx-js-fork#39,
+    pyodide/sphinx-js-fork#41, pyodide/sphinx-js-fork#43
+    pyodide/sphinx-js-fork#52, pyodide/sphinx-js-fork#53,
+    pyodide/sphinx-js-fork#54, pyodide/sphinx-js-fork#174)
+  * Added handling for Typescript type parameters and type bounds.
+    (pyodide/sphinx-js-fork#25)
+  * Only monkeypatch Sphinx classes when sphinx_js extension is used
+    (pyodide/sphinx-js-fork#27)
+  * Allow using installation of ``typedoc`` or ``jsdoc`` from `node_modules`
+    instead of requiring global install. (pyodide/sphinx-js-fork#33)
+  * Handle markdown style codepens correctly in typedoc comments.
+    (pyodide/sphinx-js-fork#47)
+  * Added support for destructuring the documentation of keyword arguments in
+    Typescript using the ``@destructure`` tag or the
+    ``ts_should_destructure_arg`` hook.
+    (pyodide/sphinx-js-fork#48, pyodide/sphinx-js-fork#74,
+     pyodide/sphinx-js-fork#75, pyodide/sphinx-js-fork#101,
+     pyodide/sphinx-js-fork#128)
+  * Added rendering for cross references in Typescript types.
+    (pyodide/sphinx-js-fork#51, pyodide/sphinx-js-fork#56,
+     pyodide/sphinx-js-fork#67, pyodide/sphinx-js-fork#81,
+     pyodide/sphinx-js-fork#82, pyodide/sphinx-js-fork#83,
+     pyodide/sphinx-js-fork#153, pyodide/sphinx-js-fork#160)
+  * Added rendering for function types in Typescript documentation.
+    (pyodide/sphinx-js-fork#55, pyodide/sphinx-js-fork#58,
+    pyodide/sphinx-js-fork#59)
+  * Add async prefix to async functions (pyodide/sphinx-js-fork#65).
+  * Added the ``sphinx-js_type`` css class around all types in documentation. This
+    allows applying custom css just to types (pyodide/sphinx-js-fork#85)
+  * Added ``ts_type_bold`` config option that applies css to ``.sphinx-js_type``
+    to render all types as bold.
+  * Added ``js:automodule`` directive (pyodide/sphinx-js-fork#108)
+  * Added ``js:autosummary`` directive (pyodide/sphinx-js-fork#109)
+  * Added rendering for ``queryType`` (e.g.,  ``let y: typeof x;``)
+    (pyodide/sphinx-js-fork#124)
+  * Added rendering for ``typeOperator`` (e.g., ``let y: keyof x``)
+    (pyodide/sphinx-js-fork#125)
+  * Fixed crash when objects are reexported. (pyodide/sphinx-js-fork#126)
+  * Added ``jsdoc_tsconfig_path`` which can specify the path to the
+    ``tsconfig.json`` file that should be used. (pyodide/sphinx-js-fork#116)
+  * Added a `js:interface` directive (pyodide/sphinx-js-fork#138).
+  * Removed parentheses from xrefs to classes (pyodide/sphinx-js-fork#155).
+  * Added a ``:js:typealias:`` directive (pyodide/sphinx-js-fork#156).
+  * Added rendering for conditional, indexed access, inferred, mapped, optional,
+    rest, and template litreal types (pyodide/sphinx-js-fork#157).
+  * Added readonly prefix to readonly properties (pyodide/sphinx-js-fork#158).
 
 4.0.0: (December 23rd, 2024)
   * Drop support for Python 3.8.
