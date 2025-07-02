@@ -78,6 +78,26 @@ export function redirectPrivateTypes(app: Application): ReadonlySymbolToType {
     },
   );
 
+  const tsdocVersion = app.toString().split(" ")[1];
+  let is28: boolean;
+  if (
+    tsdocVersion.startsWith("0.25") ||
+    tsdocVersion.startsWith("0.26") ||
+    tsdocVersion.startsWith("0.27")
+  ) {
+    is28 = false;
+  } else if (tsdocVersion.startsWith("0.28")) {
+    is28 = true;
+  } else {
+    throw new Error(`Typedoc version ${tsdocVersion} not supported`);
+  }
+
+  let getReflectionFromSymbol = is28
+    ? (context: Context, s: ts.Symbol) => context.getReflectionFromSymbol(s)
+    : (context: Context, s: ts.Symbol) =>
+        // @ts-ignore
+        context.project.getReflectionFromSymbol(s);
+
   /**
    * Get the set of ts.symbols referenced from a ModuleReflection or
    * ProjectReflection if there is only one file.
@@ -100,7 +120,7 @@ export function redirectPrivateTypes(app: Application): ReadonlySymbolToType {
     // documented
     const referenced = getReferencedSymbols(owningModule);
     return Array.from(referenced).filter((s) => {
-      const refl = context.project.getReflectionFromSymbol(s);
+      const refl = getReflectionFromSymbol(context, s);
       return (
         !refl ||
         refl.flags.isPrivate ||
@@ -109,8 +129,17 @@ export function redirectPrivateTypes(app: Application): ReadonlySymbolToType {
     });
   }
 
-  const origCreateSymbolReference = ReferenceType.createSymbolReference;
-  ReferenceType.createSymbolReference = function (
+  // @ts-ignore
+  const patchTarget: {
+    createSymbolReference: (
+      symbol: ts.Symbol,
+      context: Context,
+      name: string,
+    ) => ReferenceType;
+  } = is28 ? Context.prototype : ReferenceType;
+
+  const origCreateSymbolReference = patchTarget.createSymbolReference;
+  patchTarget.createSymbolReference = function (
     symbol: ts.Symbol,
     context: Context,
     name: string,

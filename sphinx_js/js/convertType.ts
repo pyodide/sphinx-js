@@ -215,7 +215,7 @@ class TypeConverter implements TypeVisitor<Type> {
       // up so in this case we index on file name and reference name.
 
       // Another place where we incorrectly handle merged declarations
-      const src = type.reflection?.sources?.[0];
+      const src = refl?.sources?.[0];
       if (!src) {
         return undefined;
       }
@@ -281,7 +281,7 @@ class TypeConverter implements TypeVisitor<Type> {
       throw new Error("This shouldn't happen");
     }
 
-    const path = parseFilePath(type.symbolId.fileName, this.basePath);
+    const path = parseFilePath(type.symbolId?.fileName ?? "", this.basePath);
     if (path.includes("node_modules/")) {
       // External reference
       const xref: TypeXRefExternal = {
@@ -420,6 +420,7 @@ class TypeConverter implements TypeVisitor<Type> {
     }
     const result: Type = ["{ "];
     // lit.indexSignature for 0.25.x, lit.indexSignatures for 0.26.0 and later.
+    // @ts-ignore
     const index_sig = lit.indexSignature ?? lit.indexSignatures?.[0];
     if (index_sig) {
       if (index_sig.parameters?.length !== 1) {
@@ -470,6 +471,19 @@ export function convertType(
 ): Type {
   const typeConverter = new TypeConverter(basePath, reflToPath, symbolToType);
   return typeConverter.convert(type, context);
+}
+
+export function convertTypeLiteral(
+  basePath: string,
+  reflToPath: ReadonlyMap<
+    DeclarationReflection | SignatureReflection,
+    string[]
+  >,
+  symbolToType: ReadonlySymbolToType,
+  type: DeclarationReflection,
+): Type {
+  const typeConverter = new TypeConverter(basePath, reflToPath, symbolToType);
+  return typeConverter.convertTypeLiteral(type);
 }
 
 export function referenceToXRef(

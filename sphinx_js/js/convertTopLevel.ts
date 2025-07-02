@@ -12,7 +12,11 @@ import {
   TypeContext,
   TypeParameterReflection,
 } from "typedoc";
-import { referenceToXRef, convertType } from "./convertType.ts";
+import {
+  referenceToXRef,
+  convertType,
+  convertTypeLiteral,
+} from "./convertType.ts";
 import {
   NO_DEFAULT,
   Attribute,
@@ -878,10 +882,23 @@ export class Converter {
   }
 
   convertTypeAlias(ty: DeclarationReflection): ConvertResult {
+    let type;
+    if (ty.type) {
+      type = this.convertType(ty.type);
+    } else {
+      // Handle this change:
+      // https://github.com/TypeStrong/typedoc/commit/ca94f7eaecf90c25d6377e20c405626817de1e26#diff-14759d25b74ca53aee4558d0e26c85eee3c13484ea3ccdf28872b906829ef6f8R380-R390
+      type = convertTypeLiteral(
+        this.basePath,
+        this.pathMap,
+        this.symbolToType,
+        ty,
+      );
+    }
     const ir: TopLevelIR = {
       ...this.topLevelProperties(ty),
       kind: "typeAlias",
-      type: this.convertType(ty.type!),
+      type,
       type_params: this.typeParamsToIR(ty.typeParameters),
     };
     return [ir, ty.children];

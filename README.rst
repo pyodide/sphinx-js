@@ -30,9 +30,9 @@ Setup
 
    or::
 
-        npm install typedoc@0.27
+        npm install typedoc@0.28
 
-  JSDoc 3.6.3 and 4.0.0 and TypeDoc 0.25, 0.26, and 0.27 are known to work.
+  JSDoc 3.6.3 and 4.0.0 and TypeDoc 0.25--0.28 are known to work.
 
 
 2. Install sphinx-js, which will pull in Sphinx itself as a dependency::
@@ -647,12 +647,14 @@ Version History
 
 5.0.0: (Unreleased)
   * Droped support for Python 3.9 (pyodide/sphinx-js-fork#7)
-  * Dropped support for typedoc 0.15, added support for typedoc 0.25, 0.26, and
-    0.27 (pyodide/sphinx-js-fork#11, pyodide/sphinx-js-fork#22,
+  * Dropped support for typedoc 0.15, added support for typedoc 0.25--0.28
+   (pyodide/sphinx-js-fork#11, pyodide/sphinx-js-fork#22,
     pyodide/sphinx-js-fork#31, pyodide/sphinx-js-fork#39,
     pyodide/sphinx-js-fork#41, pyodide/sphinx-js-fork#43
     pyodide/sphinx-js-fork#52, pyodide/sphinx-js-fork#53,
-    pyodide/sphinx-js-fork#54, pyodide/sphinx-js-fork#174)
+    pyodide/sphinx-js-fork#54, pyodide/sphinx-js-fork#174,
+    #266
+    )
   * Added handling for Typescript type parameters and type bounds.
     (pyodide/sphinx-js-fork#25)
   * Only monkeypatch Sphinx classes when sphinx_js extension is used
