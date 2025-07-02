@@ -39,7 +39,7 @@ def typecheck_ts(session: Session, typedoc: str):
 @nox.session(python=["3.12"])
 @nox.parametrize("typedoc", ["0.25", "0.26", "0.27", "0.28"])
 def test_typedoc(session: Session, typedoc: str) -> None:
-    typecheck_ts(typedoc)
+    typecheck_ts(session, typedoc)
     # Install python dependencies
     session.install(".[test]")
 
