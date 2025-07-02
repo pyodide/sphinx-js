@@ -72,7 +72,7 @@ warn_unused_configs = true
 check_untyped_defs = true
 disallow_any_generics = true
 disallow_subclassing_any = true
-disallow_untyped_calls = false
+disallow_untyped_calls = true
 disallow_untyped_defs = true
 disallow_incomplete_defs = true
 disallow_untyped_decorators = true
@@ -86,6 +86,7 @@ strict_equality = true
 [[tool.mypy.overrides]]
 module = "sphinx_js.parsers"
 disallow_untyped_defs = false
+disallow_untyped_calls = false
 
 
 [tool.ruff]

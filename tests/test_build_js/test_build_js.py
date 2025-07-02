@@ -2,8 +2,7 @@ from sphinx import __version__ as sphinx_version
 
 from tests.testing import SphinxBuildTestCase
 
-
-SPHINX_VERSION = tuple(int(part) for part in sphinx_version.split('.'))
+SPHINX_VERSION = tuple(int(part) for part in sphinx_version.split("."))
 
 # NOTE(willkg): This is the version of Sphinx that removes trailing " --" from
 # :params: lines when there is no description.

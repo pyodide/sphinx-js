@@ -844,6 +844,8 @@ class AutoSummaryRenderer(Renderer):
         def append_row(column_texts: list[tuple[str, str]]) -> None:
             row = nodes.row("")
             source, line = self._directive.state_machine.get_source_and_line()
+            assert source
+            assert line
             for [text, cls] in column_texts:
                 node = nodes.paragraph("")
                 vl = StringList()
