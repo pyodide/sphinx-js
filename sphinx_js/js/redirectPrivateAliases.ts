@@ -93,6 +93,7 @@ export function redirectPrivateTypes(app: Application): ReadonlySymbolToType {
   }
 
   let getReflectionFromSymbol = is28
+    // @ts-ignore
     ? (context: Context, s: ts.Symbol) => context.getReflectionFromSymbol(s)
     : (context: Context, s: ts.Symbol) =>
         // @ts-ignore
