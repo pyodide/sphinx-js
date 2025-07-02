@@ -123,6 +123,12 @@ Setup
    The domain is ``js`` even if you're writing TypeScript. Then you can omit
    all the "js:" prefixes in the directives below.
 
+History
+=======
+
+sphinx-js was created in 2017 by Erik Rose at Mozilla. It was transferred from
+Mozilla to the Pyodide organization in 2025.
+
 Use
 ===
 

@@ -9,7 +9,7 @@ description = "Support for using Sphinx on JSDoc-documented JS code"
 readme = "README.rst"
 license = {text = "MIT"}
 authors = [
-    {name = "Erik Rose", email = "erikrose@grinchcentral.com"},
+    {name = "Hood Chatham", email = "roberthoodchatham@gmail.com"},
 ]
 requires-python = ">=3.10"
 dependencies = [
@@ -43,7 +43,7 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/mozilla/sphinx-js"
+Homepage = "https://github.com/pyodide/sphinx-js"
 
 [tool.mypy]
 python_version = "3.10"
