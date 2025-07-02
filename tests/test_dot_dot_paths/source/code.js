@@ -1,5 +1,4 @@
 /**
  * Bar function
  */
-function bar(node) {
-}
+function bar(node) {}

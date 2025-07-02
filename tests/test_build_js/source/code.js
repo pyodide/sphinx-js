@@ -8,90 +8,89 @@
  * @returns {Number} What a thing
  */
 function linkDensity(node) {
-    const length = node.flavors.get('paragraphish').inlineLength;
-    const lengthWithoutLinks = inlineTextLength(node.element,
-                                                element => element.tagName !== 'A');
-    return (length - lengthWithoutLinks) / length;
+  const length = node.flavors.get("paragraphish").inlineLength;
+  const lengthWithoutLinks = inlineTextLength(
+    node.element,
+    (element) => element.tagName !== "A",
+  );
+  return (length - lengthWithoutLinks) / length;
 }
 
 /**
  * Class doc.
  */
 class ContainingClass {
+  /**
+   * Constructor doc.
+   *
+   * @arg ho A thing
+   */
+  constructor(ho) {
     /**
-     * Constructor doc.
-     *
-     * @arg ho A thing
+     * A var
      */
-    constructor(ho) {
-        /**
-         * A var
-         */
-        this.someVar = 4;
-    }
+    this.someVar = 4;
+  }
 
-    /**
-     * Here.
-     * @protected
-     */
-    someMethod(hi) {
-    }
+  /**
+   * Here.
+   * @protected
+   */
+  someMethod(hi) {}
 
-    /**
-     * Setting this also frobs the frobnicator.
-     */
-    get bar() {
-      return this._bar;
-    }
-    set bar(baz) {
-      this._bar = _bar;
-    }
+  /**
+   * Setting this also frobs the frobnicator.
+   */
+  get bar() {
+    return this._bar;
+  }
+  set bar(baz) {
+    this._bar = _bar;
+  }
 
-    /**
-     * Another.
-     */
-    anotherMethod() {
-    }
+  /**
+   * Another.
+   */
+  anotherMethod() {}
 
-    /**
-     * More.
-     */
-    yetAnotherMethod() {
-    }
+  /**
+   * More.
+   */
+  yetAnotherMethod() {}
 
-    /**
-     * Private thing.
-     * @private
-     */
-    secret() {}
+  /**
+   * Private thing.
+   * @private
+   */
+  secret() {}
 }
 
 // We won't add any new members to this class, because it would break some tests.
 /** Closed class. */
 class ClosedClass {
-    /**
-     * Public thing.
-     */
-    publical() {}
+  /**
+   * Public thing.
+   */
+  publical() {}
 
-    /**
-     * Public thing 2.
-     */
-    publical2() {}
+  /**
+   * Public thing 2.
+   */
+  publical2() {}
 
-    /**
-     * Public thing 3.
-     */
-    publical3() {}
+  /**
+   * Public thing 3.
+   */
+  publical3() {}
 }
 
 /** Non-alphabetical class. */
 class NonAlphabetical {
-    /** Fun z. */
-    z() {}
+  /** Fun z. */
+  z() {}
 
-    /** Fun a. */
-    a() {}
+  /** Fun a. */
+  a() {}
 }
 
 /**
@@ -107,7 +106,6 @@ function shadow() {}
  * @typedef {Object} TypeDefinition
  * @property {Number} width - width in pixels
  */
-
 
 /**
  * Some global callback
@@ -148,7 +146,7 @@ const ExampleAttribute = null;
  * @param {string} p2.foo
  * @param {string} p2.bar
  */
-function destructuredParams(p1, {foo, bar}) {}
+function destructuredParams(p1, { foo, bar }) {}
 
 /**
  * @param a_ Snorf
@@ -173,7 +171,12 @@ function defaultsDocumentedInDoclet(func, str, strNum, strBool, num, nil) {}
  * @param [bool]
  * @param [nil]
  */
-function defaultsDocumentedInCode(num=5, str="true", bool=true, nil=null) {}
+function defaultsDocumentedInCode(
+  num = 5,
+  str = "true",
+  bool = true,
+  nil = null,
+) {}
 
 /**
  * Variadic parameter
@@ -219,8 +222,7 @@ class SeeClass {}
 /**
  * @arg fnodeA {Node|Fnode}
  */
-function union(fnodeA) {
-}
+function union(fnodeA) {}
 
 /**
  * Once upon a time, there was a large bear named Sid. Sid wore green pants
@@ -232,25 +234,23 @@ function union(fnodeA) {
  *     illustrious words as aardvark and artichoke.
  * @param b Next param, which should be part of the same field list
  */
-function longDescriptions(a, b) {
-}
+function longDescriptions(a, b) {}
 
 /**
  * Class doc.
  */
 class SimpleClass {
+  /**
+   * Static.
+   *
+   * @see nonStaticMethod
+   */
+  static staticMethod() {}
 
-    /**
-     * Static.
-     *
-     * @see nonStaticMethod
-     */
-    static staticMethod() {}
-
-    /**
-     * Non-static member.
-     *
-     * @see staticMethod
-     */
-    nonStaticMethod() {}
+  /**
+   * Non-static member.
+   *
+   * @see staticMethod
+   */
+  nonStaticMethod() {}
 }

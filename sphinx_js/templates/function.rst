@@ -1,10 +1,12 @@
 {% import 'common.rst' as common %}
 
-{% if is_static %}
-.. js:staticfunction:: {{ name }}{{ '?' if is_optional else '' }}{{ params }}
-{% else %}
-.. js:function:: {{ name }}{{ '?' if is_optional else '' }}{{ params }}
-{% endif %}
+.. js:function:: {{ name }}{{ '?' if is_optional else '' }}{{ type_params }}{{ params }}
+   {% if is_static -%}
+   :static:
+   {% endif %}
+   {%- if is_async -%}
+   :async:
+   {% endif %}
 
    {{ common.deprecated(deprecated)|indent(3) }}
 
@@ -12,9 +14,7 @@
      {{ description|indent(3) }}
    {%- endif %}
 
-   {% for heads, tail in fields -%}
-     :{{ heads|join(' ') }}: {{ tail }}
-   {% endfor %}
+   {{ common.fields(fields) | indent(3) }}
 
    {{ common.examples(examples)|indent(3) }}
 

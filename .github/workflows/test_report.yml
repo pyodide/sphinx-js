@@ -1,0 +1,51 @@
+name: "Test Report"
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
+jobs:
+  report:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dorny/test-reporter@v1.6.0
+        with:
+          artifact: test-results-${{ matrix.python-version }}
+          name: Test report - ${{ matrix.python-version }}
+          path: test-results.xml
+          reporter: java-junit
+  report-typedoc:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12"]
+        typedoc-version: ["0.25"]
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dorny/test-reporter@v1.6.0
+        with:
+          artifact: test_typedoc-results-${{ matrix.python-version }}-${{ matrix.typedoc-version }}
+          name: Test report - Python ${{ matrix.python-version}} + typedoc ${{ matrix.typedoc-version }}
+          path: test-results.xml
+          reporter: java-junit
+  report-sphinx:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12"]
+        sphinx-version: ["6"]
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dorny/test-reporter@v1.6.0
+        with:
+          artifact: test_sphinx_6-${{ matrix.python-version }}
+          name: Test report - Sphinx 6
+          path: test-results.xml
+          reporter: java-junit

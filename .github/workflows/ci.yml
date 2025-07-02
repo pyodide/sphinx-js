@@ -3,23 +3,20 @@ name: CI
 
 on:
   push:
-    branches:
-      - 'master'
+    branches: [master]
   pull_request:
-    branches:
-      - 'master'
+    branches: [master]
 
 jobs:
   test:
-
     runs-on: ubuntu-latest
 
     continue-on-error: true
 
     strategy:
+      fail-fast: false
       matrix:
-        python-version: ['3.9', '3.10', '3.11', '3.12', '3.13']
-        experimental: [false]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
 
     name: Python ${{ matrix.python-version}}
     steps:
@@ -33,6 +30,89 @@ jobs:
       - name: Update pip and install dev requirements
         run: |
           python -m pip install --upgrade pip
-          pip install tox tox-gh-actions
+          pip install nox
+
       - name: Test
-        run: tox
+        run: nox -s tests-${{ matrix.python-version }}
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - uses: actions/upload-artifact@v4
+        if: success() || failure()
+        with:
+          name: test-results-${{ matrix.python-version }}
+          path: test-results.xml
+
+  test-typedoc-versions:
+    runs-on: ubuntu-latest
+
+    continue-on-error: true
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12"]
+        typedoc-version: ["0.25", "0.26", "0.27"]
+
+    name: Python ${{ matrix.python-version}} + typedoc ${{ matrix.typedoc-version }}
+    steps:
+      - uses: actions/checkout@v3.1.0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Set up Python
+        uses: actions/setup-python@v4.3.0
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Update pip and install dev requirements
+        run: |
+          python -m pip install --upgrade pip
+          pip install nox
+      - name: Test
+        run: nox -s "test_typedoc-${{ matrix.python-version }}(typedoc='${{ matrix.typedoc-version }}')"
+
+      - uses: actions/upload-artifact@v4
+        if: success() || failure()
+        with:
+          name: test_typedoc-results-${{ matrix.python-version }}-${{ matrix.typedoc-version }}
+          path: test-results.xml
+
+  test-sphinx-versions:
+    runs-on: ubuntu-latest
+
+    continue-on-error: true
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12"]
+        sphinx-version: ["6"]
+
+    name: Test sphinx 6
+    steps:
+      - uses: actions/checkout@v3.1.0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4.3.0
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Update pip and install dev requirements
+        run: |
+          python -m pip install --upgrade pip
+          pip install nox
+      - name: Test
+        run: nox -s "test_sphinx_6-${{ matrix.python-version }}"
+
+      - uses: actions/upload-artifact@v4
+        if: success() || failure()
+        with:
+          name: test_sphinx_6-${{ matrix.python-version }}
+          path: test-results.xml

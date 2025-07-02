@@ -1,0 +1,44 @@
+[tool.mypy]
+python_version = "3.10"
+show_error_codes = true
+warn_unreachable = true
+enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
+
+# Strict checks
+warn_unused_configs = true
+check_untyped_defs = true
+disallow_any_generics = true
+disallow_subclassing_any = true
+disallow_untyped_calls = false
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_return_any = true
+no_implicit_reexport = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = "sphinx_js.parsers"
+disallow_untyped_defs = false
+
+
+[tool.ruff]
+select = [
+  "E",     # pycodestyles
+  "W",     # pycodestyles
+  "F",     # pyflakes
+  "B0",    # bugbear (all B0* checks enabled by default)
+  "B904",  # bugbear (Within an except clause, raise exceptions with raise ... from err)
+  "B905",  # bugbear (zip() without an explicit strict= parameter set.)
+  "UP",    # pyupgrade
+  "I",     # isort
+  "PGH",   # pygrep-hooks
+]
+ignore = ["E402", "E501", "E731", "E741", "B904", "B020"]
+target-version = "py310"
+
+[tool.ruff.flake8-bugbear]
+extend-immutable-calls = ["typer.Argument", "typer.Option"]

@@ -1,36 +1,36 @@
-class Superclass {
-  method() {
-  }
+export class Superclass {
+  method() {}
 }
 
-interface SuperInterface {
-}
+export interface SuperInterface {}
 
-interface Interface extends SuperInterface {
-}
+export interface Interface extends SuperInterface {}
 
-interface InterfaceWithMembers {
+export interface InterfaceWithMembers {
   callableProperty(): void;
 }
 
 /**
  * An empty subclass
  */
-export abstract class EmptySubclass extends Superclass implements Interface {
-}
+export abstract class EmptySubclass extends Superclass implements Interface {}
 
-const topLevelConst = 3;
+export abstract class EmptySubclass2
+  extends Promise<number>
+  implements Interface {}
+
+export const topLevelConst = 3;
 
 /**
  * @param a Some number
  * @param b Some strings
  * @return The best number
  */
-function func(a: number = 1, ...b: string[]): number {
+export function func(a: number = 1, ...b: string[]): number {
   return 4;
 }
 
-class ClassWithProperties {
+export class ClassWithProperties {
   static someStatic: number;
   someOptional?: number;
   private somePrivate: number;
@@ -39,17 +39,24 @@ class ClassWithProperties {
    */
   someNormal: number;
 
-  constructor(a: number) {
-  }
+  constructor(a: number) {}
 
   get gettable(): number {
     return 5;
   }
 
-  set settable(value: string) {
-  }
+  set settable(value: string) {}
 }
 
-class Indexable {
-  [id:string]: any;  // smoketest
+export class Indexable {
+  [id: string]: any; // smoketest
 }
+
+// Test that we don't fail on a reexport
+export { Blah } from "./exports";
+
+/**
+ * A super special type alias
+ * @typeparam T The whatsit
+ */
+export type TestTypeAlias<T> = 1 | 2 | T;

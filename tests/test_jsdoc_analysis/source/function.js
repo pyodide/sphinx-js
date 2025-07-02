@@ -14,4 +14,4 @@
  *     there are
  * @exception ExplosionError It went boom.
  */
-function foo(bar, baz=8) {}
+function foo(bar, baz = 8) {}

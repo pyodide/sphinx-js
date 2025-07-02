@@ -1,19 +1,18 @@
 /**
  * Function
  */
-function foo(): void {
+export function foo(): void {
   /**
    * An inner function
    */
-  function inner(): void {
-  }
+  function inner(): void {}
 }
-foo.adHocInner = 'innerValue';
+foo.adHocInner = "innerValue";
 
 /**
  * Foo class
  */
-class Foo {
+export class Foo {
   /**
    * Static member
    */
@@ -32,21 +31,19 @@ class Foo {
   /**
    * Constructor
    */
-  constructor (num: number) {
+  constructor(num: number) {
     this.numInstanceVar = num;
   }
 
   /**
    * Method
    */
-  someMethod(): void {
-  }
+  someMethod(): void {}
 
   /**
    * Static method
    */
-  static staticMethod(): void {
-  }
+  static staticMethod(): void {}
 
   /**
    * Getter
@@ -58,20 +55,19 @@ class Foo {
   /**
    * Setter
    */
-  set setter(n: number) {
-  }
+  set setter(n: number) {}
 }
 
-interface Face {
+export interface Face {
   /**
    * Interface property
    */
   moof: string;
 }
 
-namespace SomeSpace {
+export namespace SomeSpace {
   /**
    * Namespaced number
    */
-  const spacedNumber = 4;
+  export const spacedNumber = 4;
 }

@@ -4,10 +4,7 @@
 /build
 /dist
 /node_modules
-/tests/source/docs/_build
-/tests/test_build_js/source/_build
-/tests/test_build_js/source/docs/_build
-/tests/test_build_ts/source/docs/_build
+_build
 sphinx_js.egg-info/
 # Python 3
 */__pycache__/*
@@ -19,3 +16,8 @@ sphinx_js.egg-info/
 .vscode
 .DS_Store
 venv
+.venv
+coverage.xml
+test-results.xml
+node_modules
+tsconfig.tsbuildinfo
