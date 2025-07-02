@@ -42,6 +42,7 @@ repos:
     rev: "v6.2.5"
     hooks:
       - id: rstcheck
+        exclude: (tests/|sphinx_js/templates)
         additional_dependencies: ["rstcheck[sphinx,toml]"]
 
   - repo: https://github.com/codespell-project/codespell

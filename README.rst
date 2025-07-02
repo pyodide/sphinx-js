@@ -24,7 +24,7 @@ and emitting all the type information you would expect.
 Setup
 =====
 
-1. Install JSDoc (or TypeDoc if you're writing TypeScript).
+1. Install JSDoc (or TypeDoc if you're writing TypeScript)::
 
         npm install jsdoc
 
@@ -516,7 +516,7 @@ future.
 For an example, you can see Pyodide's config file `here <shouldDestructureArg>`__.
 
 This file should export a config object with some of the three following
-functions::
+functions:
 
 * ``shouldDestructureArg: (param: ParameterReflection) => boolean``
 
