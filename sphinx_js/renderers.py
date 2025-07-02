@@ -710,7 +710,11 @@ class AutoModuleRenderer(JsRenderer):
         return analyzer._modules_by_path.get(self._partial_path)
 
     def rst_for_group(self, objects: Iterable[TopLevel]) -> list[str]:
-        return [self.rst_for(obj) for obj in objects]
+        return [
+            self.rst_for(obj)
+            for obj in objects
+            if "@omitFromAutoModule" not in obj.modifier_tags
+        ]
 
     def rst(  # type:ignore[override]
         self,
@@ -722,7 +726,7 @@ class AutoModuleRenderer(JsRenderer):
         rst.append([f".. js:module:: {''.join(partial_path)}"])
         for group_name in _SECTION_ORDER:
             rst.append(self.rst_for_group(getattr(obj, group_name)))
-        return "\n\n".join(["\n\n".join(r) for r in rst])
+        return "\n\n".join(["\n\n".join(r) for r in rst if r])
 
 
 class AutoSummaryRenderer(Renderer):
@@ -787,26 +791,27 @@ class AutoSummaryRenderer(Renderer):
         else:
             return ""
 
-    def get_summary_row(
-        self, pkgname: str, obj: TopLevel
-    ) -> tuple[str, str, str, str, str, str]:
+    def get_summary_row(self, pkgname: str, obj: TopLevel) -> tuple[str, str, str]:
         """Get the summary table row for obj.
 
         The output is designed to be input to format_table. The link name
         needs to be set up so that :any:`link_name` makes a link to the
         actual API docs for this object.
         """
-        sig = self.get_sig(obj)
         display_name = obj.name
         prefix = "**async** " if getattr(obj, "is_async", False) else ""
         qualifier = "any"
-        summary = self.extract_summary(render_description(obj.description))
         link_name = pkgname + "." + display_name
-        return (prefix, qualifier, display_name, sig, summary, link_name)
+        main = f"{prefix}:{qualifier}:`{display_name} <{link_name}>`"
+        if slink := obj.block_tags.get("summaryLink"):
+            main = render_description(slink[0])
+        sig = self.get_sig(obj)
+        summary = self.extract_summary(render_description(obj.description))
+        return (main, sig, summary)
 
     def get_summary_table(
         self, pkgname: str, group: Iterable[TopLevel]
-    ) -> list[tuple[str, str, str, str, str, str]]:
+    ) -> list[tuple[str, str, str]]:
         """Get the data for a summary tget_summary_tableable. Return value
         is set up to be an argument of format_table.
         """
@@ -818,9 +823,7 @@ class AutoSummaryRenderer(Renderer):
     # We have to change the value of one string: qualifier = 'obj   ==>
     # qualifier = 'any'
     # https://github.com/sphinx-doc/sphinx/blob/6.0.x/sphinx/ext/autosummary/__init__.py#L375
-    def format_table(
-        self, items: list[tuple[str, str, str, str, str, str]]
-    ) -> list[Node]:
+    def format_table(self, items: list[tuple[str, str, str]]) -> list[Node]:
         """Generate a proper list of table nodes for autosummary:: directive.
 
         *items* is a list produced by :meth:`get_items`.
@@ -857,16 +860,13 @@ class AutoSummaryRenderer(Renderer):
                     row.append(entry)
             body.append(row)
 
-        for prefix, qualifier, name, sig, summary, real_name in items:
+        for name, sig, summary in items:
             # The body of this loop is changed from copied code.
-            sig = rst.escape(sig)
-            if sig:
-                sig = f"**{sig}**"
             if "nosignatures" not in self._options:
-                col1 = rf"{prefix}:{qualifier}:`{name} <{real_name}>`\ {sig}"
-            else:
-                col1 = f"{prefix}:{qualifier}:`{name} <{real_name}>`"
-            col2 = summary
-            append_row([(col1, "name"), (col2, "summary")])
+                sig = rst.escape(sig)
+                if sig:
+                    sig = f"**{sig}**"
+                name = rf"{name}\ {sig}"
+            append_row([(name, "name"), (summary, "summary")])
 
         return [table_spec, table]

@@ -20,7 +20,7 @@ setup(
         "Sphinx>=4.1.0",
         "markupsafe==3.0.2",
         "attrs",
-        "cattrs",
+        "cattrs<25.1",
     ],
     python_requires=">=3.10",
     classifiers=[

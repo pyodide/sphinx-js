@@ -742,3 +742,13 @@ class TestTypeName(TypeDocAnalyzerTestCase):
         obj = self.analyzer.get_object(["TemplateLiteral"])
         assert isinstance(obj, TypeAlias)
         assert join_type(obj.type) == "`${number}: ${string}`"
+
+    def test_custom_tags(self):
+        obj = self.analyzer.get_object(["CustomTags"])
+        assert isinstance(obj, TypeAlias)
+        assert "@hidetype" in obj.modifier_tags
+        assert "@omitFromAutoModule" in obj.modifier_tags
+        assert [join_description(d) for d in obj.block_tags["summaryLink"]] == [
+            ":role:`target`"
+        ]
+        assert [join_description(d) for d in obj.block_tags["destructure"]] == ["a.b"]

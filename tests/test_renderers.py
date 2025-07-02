@@ -12,6 +12,7 @@ from sphinx_js.ir import (
     Exc,
     Function,
     Interface,
+    Module,
     Param,
     Return,
     TypeAlias,
@@ -22,6 +23,7 @@ from sphinx_js.ir import (
 from sphinx_js.renderers import (
     AutoAttributeRenderer,
     AutoFunctionRenderer,
+    AutoModuleRenderer,
     render_description,
 )
 
@@ -68,23 +70,26 @@ def ts_xref_formatter(config, xref):
         return xref.name
 
 
-@pytest.fixture()
-def function_renderer():
-    class _config:
-        pass
-
+def make_renderer(cls):
     class _app:
-        config = _config
+        class config:
+            ts_type_xref_formatter = ts_xref_formatter
 
-    def lookup_object(self, partial_path: list[str]):
-        return self.objects[partial_path[-1]]
-
-    renderer = AutoFunctionRenderer.__new__(AutoFunctionRenderer)
+    renderer = cls.__new__(cls)
     renderer._app = _app
     renderer._explicit_formal_params = None
     renderer._content = []
     renderer._set_type_xref_formatter(ts_xref_formatter)
     renderer._add_span = False
+    return renderer
+
+
+@pytest.fixture()
+def function_renderer():
+    def lookup_object(self, partial_path: list[str]):
+        return self.objects[partial_path[-1]]
+
+    renderer = make_renderer(AutoFunctionRenderer)
     renderer.lookup_object = lookup_object.__get__(renderer)
     renderer.objects = {}
     return renderer
@@ -92,18 +97,20 @@ def function_renderer():
 
 @pytest.fixture()
 def attribute_renderer():
-    class _config:
-        pass
+    return make_renderer(AutoAttributeRenderer)
 
-    class _app:
-        config = _config
 
-    renderer = AutoAttributeRenderer.__new__(AutoAttributeRenderer)
-    renderer._app = _app
-    renderer._explicit_formal_params = None
-    renderer._content = []
-    renderer._set_type_xref_formatter(ts_xref_formatter)
-    renderer._add_span = False
+@pytest.fixture()
+def auto_module_renderer():
+    renderer = make_renderer(AutoModuleRenderer)
+
+    class directive:
+        class state:
+            class document:
+                class settings:
+                    pass
+
+    renderer._directive = directive
     return renderer
 
 
@@ -144,6 +151,18 @@ def type_alias_render(attribute_renderer) -> Any:
         )
 
     return type_alias_render
+
+
+@pytest.fixture()
+def auto_module_render(auto_module_renderer) -> Any:
+    def auto_module_render(partial_path=None, use_short_name=False, **args):
+        if not partial_path:
+            partial_path = ["blah"]
+        return auto_module_renderer.rst(
+            partial_path, make_module(**args), use_short_name
+        )
+
+    return auto_module_render
 
 
 top_level_dict = dict(
@@ -187,6 +206,17 @@ function_dict = (
 )
 attribute_dict = top_level_dict | member_dict | dict(type="")
 type_alias_dict = top_level_dict | dict(type="", type_params=[])
+module_dict = dict(
+    filename="",
+    deppath=None,
+    path=[],
+    line=0,
+    attributes=[],
+    functions=[],
+    classes=[],
+    interfaces=[],
+    type_aliases=[],
+)
 
 
 def make_class(**args):
@@ -207,6 +237,10 @@ def make_attribute(**args):
 
 def make_type_alias(**args):
     return TypeAlias(**(type_alias_dict | args))
+
+
+def make_module(**args):
+    return Module(**(module_dict | args))
 
 
 DEFAULT_RESULT = ".. js:function:: blah()\n"
@@ -560,5 +594,55 @@ def test_type_alias(type_alias_render):
            With a type parameter
 
            :typeparam T: ABC (extends **number**)
+        """
+    )
+
+
+def test_auto_module_render(auto_module_render):
+    assert auto_module_render() == ".. js:module:: blah"
+    assert auto_module_render(
+        functions=[
+            make_function(
+                name="f",
+                description="this is a description",
+                params=[Param("a", description="a description")],
+            ),
+            make_function(name="g"),
+        ],
+        attributes=[make_attribute(name="x", type="any"), make_attribute(name="y")],
+        type_aliases=[
+            make_type_alias(name="S"),
+            make_type_alias(name="T"),
+            # Check that we omit stuff marked with @omitFromAutoModule
+            make_type_alias(name="U", modifier_tags=["@omitFromAutoModule"]),
+        ],
+    ) == dedent(
+        """\
+        .. js:module:: blah
+
+        .. js:typealias:: S
+
+
+        .. js:typealias:: T
+
+
+        .. js:attribute:: x
+
+           .. rst-class:: js attribute type
+
+                  type: **any**
+
+
+        .. js:attribute:: y
+
+
+        .. js:function:: f(a)
+
+           this is a description
+
+           :param a: a description
+
+
+        .. js:function:: g()
         """
     )

@@ -53,8 +53,8 @@ async function makeApp(args: string[]): Promise<Application> {
     throw new ExitError(ExitCodes.Ok);
   }
   app.extraData = {};
-  app.options.getValue("modifierTags").push("@hidetype");
-  app.options.getValue("blockTags").push("@destructure");
+  app.options.getValue("modifierTags").push("@hidetype", "@omitFromAutoModule");
+  app.options.getValue("blockTags").push("@destructure", "@summaryLink");
   return app;
 }
 

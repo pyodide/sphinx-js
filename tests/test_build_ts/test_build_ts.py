@@ -490,12 +490,20 @@ class TestHtmlBuilder(SphinxBuildTestCase):
         classes = soup.find(class_="classes")
         assert classes.find(class_="summary").get_text() == "This is a summary."
 
-        classes = soup.find(class_="interfaces")
+        interfaces = soup.find(class_="interfaces")
         assert (
-            classes.find(class_="summary").get_text()
+            interfaces.find(class_="summary").get_text()
             == "Documentation for the interface I"
         )
 
-        classes = soup.find(class_="type_aliases")
-        assert classes
-        assert classes.find(class_="summary").get_text() == "A super special type alias"
+        type_aliases = soup.find(class_="type_aliases")
+        assert type_aliases
+        assert (
+            type_aliases.find(class_="summary").get_text()
+            == "A super special type alias"
+        )
+        rows = list(type_aliases.find_all("tr"))
+        assert len(rows) == 3
+        href = rows[2].find("a")
+        assert href.get_text() == "TestTypeAlias3"
+        assert href["href"] == "automodule.html#module.TestTypeAlias"

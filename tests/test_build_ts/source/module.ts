@@ -63,6 +63,12 @@ export let interfaceInstance: I = {};
  */
 export type TestTypeAlias<T extends A> = { a: T };
 export type TestTypeAlias2 = { a: number };
+/**
+ * Omit from automodule and send summary link somewhere else
+ * @omitFromAutoModule
+ * @summaryLink :js:typealias:`TestTypeAlias3 <module.TestTypeAlias>`
+ */
+export type TestTypeAlias3 = { a: number };
 
 export let t: TestTypeAlias<A>;
 export let t2: TestTypeAlias2;
@@ -70,7 +76,7 @@ export let t2: TestTypeAlias2;
 /**
  * A function with a type parameter!
  *
- * We'll refer to ourselves: :js:func:`functionWithTypeParam`
+ * We'll refer to ourselves: :js:func:`~module.functionWithTypeParam`
  *
  * @typeParam T The type parameter
  * @typeParam S Another type param

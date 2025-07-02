@@ -246,3 +246,11 @@ export type MappedType3 = { readonly [property in keys]-?: number };
 export type TemplateLiteral = `${number}: ${string}`;
 
 export type OptionalType = [number?];
+
+/**
+ * @hidetype
+ * @omitFromAutoModule
+ * @destructure a.b
+ * @summaryLink :role:`target`
+ */
+export type CustomTags = {};
