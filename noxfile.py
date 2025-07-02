@@ -35,6 +35,7 @@ def typecheck_ts(session: Session, typedoc: str):
         session.run("npm", "i", external=True)
         session.run("npx", "tsc", external=True)
 
+
 @nox.session(python=["3.12"])
 @nox.parametrize("typedoc", ["0.25", "0.26", "0.27", "0.28"])
 def test_typedoc(session: Session, typedoc: str) -> None:
