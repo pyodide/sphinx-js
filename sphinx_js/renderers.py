@@ -844,11 +844,11 @@ class AutoSummaryRenderer(Renderer):
         def append_row(column_texts: list[tuple[str, str]]) -> None:
             row = nodes.row("")
             source, line = self._directive.state_machine.get_source_and_line()
+            assert source
+            assert line
             for [text, cls] in column_texts:
                 node = nodes.paragraph("")
                 vl = StringList()
-                assert source
-                assert line
                 vl.append(text, "%s:%d:<autosummary>" % (source, line))
                 with switch_source_input(self._directive.state, vl):
                     self._directive.state.nested_parse(vl, 0, node)
