@@ -1,11 +1,8 @@
 export class ClassB {
-  constructor() {
-  }
+  constructor() {}
 
   /**
    * Here.
    */
-  methodB() {
-  }
+  methodB() {}
 }
-

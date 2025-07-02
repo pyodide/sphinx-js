@@ -10,7 +10,4 @@ class Tests(SphinxBuildTestCase):
         Also make sure it render correctly afterward.
 
         """
-        self._file_contents_eq(
-            'index',
-            'bar(node)\n\n'
-            '   Bar function\n')
+        self._file_contents_eq("index", "bar(node)\n\n" "   Bar function\n")

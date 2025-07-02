@@ -1,6 +1,10 @@
 {% import 'common.rst' as common %}
 
-.. js:class:: {{ name }}{{ params }}
+{% if is_interface -%}
+.. js:interface:: {{ name }}{{ type_params }}{{ params }}
+{%- else -%}
+.. js:class:: {{ name }}{{ type_params }}{{ params }}
+{%- endif %}
 
    {{ common.deprecated(deprecated)|indent(3) }}
 
@@ -12,23 +16,19 @@
      *abstract*
    {%- endif %}
 
-   {% if is_interface -%}
-     *interface*
-   {%- endif %}
-
    {{ common.exported_from(exported_from)|indent(3) }}
 
    {% if supers -%}
      **Extends:**
        {% for super in supers -%}
-         - :js:class:`~{{ super.dotted() }}`
+         - {{ super }}
        {% endfor %}
    {%- endif %}
 
    {% if interfaces -%}
      **Implements:**
        {% for interface in interfaces -%}
-         - :js:class:`~{{ interface.dotted() }}`
+         - {{ interface }}
        {% endfor %}
    {%- endif %}
 
@@ -36,9 +36,7 @@
      {{ constructor_comment|indent(3) }}
    {%- endif %}
 
-   {% for heads, tail in fields -%}
-     :{{ heads|join(' ') }}: {{ tail }}
-   {% endfor %}
+   {{ common.fields(fields) | indent(3) }}
 
    {{ common.examples(examples)|indent(3) }}
 

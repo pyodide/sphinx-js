@@ -1,5 +1,4 @@
 /**
  * Foo.
  */
-function foo() {
-}
+function foo() {}

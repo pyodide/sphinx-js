@@ -2,15 +2,13 @@
  * Class doc.
  */
 class ClassB {
+  /**
+   * Static.
+   */
+  static noUseOfThis() {}
 
-    /**
-     * Static.
-     */
-    static noUseOfThis() {}
-
-    /**
-     * Here.
-     */
-    methodB() {
-    }
+  /**
+   * Here.
+   */
+  methodB() {}
 }

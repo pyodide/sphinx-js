@@ -7,6 +7,4 @@ class Tests(SphinxBuildTestCase):
         happen before we added the tab_width workaround.
 
         """
-        self._file_contents_eq(
-            'index',
-            'foo()\n\n   Foo.\n')
+        self._file_contents_eq("index", "foo()\n\n   Foo.\n")

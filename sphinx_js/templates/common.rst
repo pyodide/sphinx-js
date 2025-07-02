@@ -8,15 +8,12 @@
 {% endmacro %}
 
 {% macro examples(items) %}
-{% if items -%}
-**Examples:**
+{% for example in items %}
 
-{% for example in items -%}
-.. code-block:: js
+.. admonition:: Example
 
    {{ example|indent(3) }}
 {% endfor %}
-{%- endif %}
 {% endmacro %}
 
 {% macro see_also(items) %}
@@ -33,4 +30,10 @@
 {% if pathname -%}
     *exported from* :js:mod:`{{ pathname.dotted() }}`
 {%- endif %}
+{% endmacro %}
+
+{% macro fields(items) %}
+{% for heads, tail in items -%}
+   :{{ heads|join(' ') }}: {{ tail }}
+{% endfor %}
 {% endmacro %}

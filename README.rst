@@ -24,16 +24,16 @@ and emitting all the type information you would expect.
 Setup
 =====
 
-1. Install JSDoc (or TypeDoc if you're writing TypeScript). The tool must be on
-   your ``$PATH``, so you might want to install it globally::
+1. Install JSDoc (or TypeDoc if you're writing TypeScript).
 
-       npm install -g jsdoc
+        npm install jsdoc
 
    or::
 
-       npm install -g typedoc
+        npm install typedoc@0.27
 
-   JSDoc 3.6.3 and 4.0.0 and TypeDoc 0.15.0 are known to work.
+  JSDoc 3.6.3 and 4.0.0 and TypeDoc 0.27 are known to work.
+
 
 2. Install sphinx-js, which will pull in Sphinx itself as a dependency::
 
@@ -45,8 +45,28 @@ Setup
        cd my-project
        sphinx-quickstart
 
-         Please enter values for the following settings (just press Enter to
-         accept a default value, if one is given in brackets).
+          Please enter values for the following settings (just press Enter to
+          accept a default value, if one is given in brackets).
+
+          Selected root path: .
+
+          You have two options for placing the build directory for Sphinx output.
+          Either, you use a directory "_build" within the root path, or you separate
+          "source" and "build" directories within the root path.
+          > Separate source and build directories (y/n) [n]:
+
+          The project name will occur in several places in the built documentation.
+          > Project name: My Project
+          > Author name(s): Fred Fredson
+          > Project release []: 1.0
+
+          If the documents are to be written in a language other than English,
+          you can select a language here by its language code. Sphinx will then
+          translate text that it generates into that language.
+
+          For a list of supported codes, see
+          https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-language.
+          > Project language [en]:
 
          Selected root path: .
 
@@ -395,9 +415,12 @@ Configuration Reference
   specified as well. Defaults to ``../``.
 
 ``jsdoc_config_path``
-  A conf.py-relative path to a JSDoc config file, which is useful if you want
-  to specify your own JSDoc options, like recursion and custom filename
-  matching. If using TypeDoc, you can also point to a ``tsconfig.json`` file.
+  A conf.py-relative path to a JSDoc config file, which is useful if you want to
+  specify your own JSDoc options, like recursion and custom filename matching.
+  If using TypeDoc, you can also point to a ``typedoc.json`` file.
+
+``jsdoc_tsconfig_path``
+  If using TypeDoc, specify the path of ``tsconfig.json`` file
 
 ``root_for_relative_js_paths``
   Relative JS entity paths are resolved relative to this path. Defaults to
@@ -408,6 +431,21 @@ Configuration Reference
   run every time Sphinx is. If you have a large number of source files, it may
   help to configure this value. But be careful: the cache is not automatically
   flushed if your source code changes; you must delete it manually.
+
+How sphinx-js finds typedoc / jsdoc
+-----------------------------------
+
+1. If the environment variable ``SPHINX_JS_NODE_MODULES`` is defined, it is
+   expected to point to a ``node_modules`` folder in which typedoc / jsdoc is installed.
+
+2. If ``SPHINX_JS_NODE_MODULES`` is not defined, we look in the directory of
+   ``conf.py`` for a ``node_modules`` folder in which typedoc / jsdoc. If this is
+   not found, we look for a ``node_modules`` folder in the parent directories
+   until we make it to the root of the file system.
+
+3. We check if ``typedoc`` / ``jsdoc`` are on the PATH, if so we use that.
+
+4. If none of the previous approaches located ``typedoc`` / ``jsdoc`` we raise an error.
 
 Example
 =======
@@ -451,11 +489,11 @@ Caveats
 Tests
 =====
 
-Run the tests using tox, which will also install JSDoc and TypeDoc at pinned
+Run the tests using nox, which will also install JSDoc and TypeDoc at pinned
 versions::
 
-    pip install tox
-    tox
+    pip install nox
+    nox
 
 Provenance
 ==========
@@ -513,7 +551,7 @@ Version History
 
 3.1.1: (March 23rd, 2021)
   * Rewrite large parts of the suffix tree that powers path lookup. This fixes
-    several crashers.
+    several crasher.
 
 3.1: (September 10th, 2020)
   * Re-architect language analysis. There is now a well-documented intermediate
@@ -645,7 +683,7 @@ Version History
     object labeled as a ``@class``.
 
 1.5.2: (March 22th, 2017)
-  * Fix crasher while warning that a specified longname isn't found.
+  * Fix crash while warning that a specified longname isn't found.
 
 1.5.1: (March 20th, 2017)
   * Sort ``:members:`` alphabetically when an order is not explicitly specified.
