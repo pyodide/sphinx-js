@@ -652,7 +652,7 @@ See ``CONTRIBUTORS`` for details.
 Version History
 ===============
 
-5.0.0: (Unreleased)
+5.0.0: (July 2nd, 2025)
   * Dropped support for Python 3.9 (pyodide/sphinx-js-fork#7)
   * Dropped support for typedoc 0.15, added support for typedoc 0.25--0.28 (
     pyodide/sphinx-js-fork#11, pyodide/sphinx-js-fork#22,
