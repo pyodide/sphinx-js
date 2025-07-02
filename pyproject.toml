@@ -12,23 +12,23 @@ authors = [
 ]
 requires-python = ">=3.10"
 dependencies = [
-    "Jinja2>2.0",
-    "parsimonious>=0.10.0,<0.11.0",
-    "Sphinx>=4.1.0",
-    "markupsafe==3.0.2",
     "attrs",
     "cattrs<25.1",
+    "Jinja2>2.0",
+    "markupsafe==3.0.2",
+    "parsimonious>=0.10.0,<0.11.0",
+    "Sphinx>=4.1.0",
 ]
 keywords = [
-    "sphinx",
-    "documentation",
     "docs",
+    "documentation",
     "javascript",
     "js",
     "jsdoc",
     "restructured",
-    "typescript",
+    "sphinx",
     "typedoc",
+    "typescript",
 ]
 classifiers = [
     "Framework :: Sphinx :: Extension",
@@ -44,6 +44,17 @@ dynamic = ["version"]
 
 [project.urls]
 Homepage = "https://github.com/pyodide/sphinx-js"
+
+[project.optional-dependencies]
+test = [
+    "beautifulsoup4",
+    "build",
+    "defusedxml",
+    "nox",
+    "pytest-cov",
+    "recommonmark",
+    "twine",
+]
 
 [tool.hatch.version]
 source = "vcs"
