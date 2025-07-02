@@ -32,8 +32,7 @@ Setup
 
         npm install typedoc@0.28
 
-  JSDoc 3.6.3 and 4.0.0 and TypeDoc 0.25--0.28 are known to work.
-
+   JSDoc 3.6.3 and 4.0.0 and TypeDoc 0.25--0.28 are known to work.
 
 2. Install sphinx-js, which will pull in Sphinx itself as a dependency::
 
@@ -453,7 +452,7 @@ variants:
 
 * a ``sphinx_js.ir.TypeXRefInternal`` with fields ``path`` and ``kind``
 * a ``sphinx_js.ir.TypeXRefExternal`` with fields ``name``, ``package``,
-``sourcefilename`` and ``qualifiedName``
+  ``sourcefilename`` and ``qualifiedName``
 
 The return value should be restructured text that you wish to be inserted in
 place of the type. For example:
@@ -505,7 +504,7 @@ Configuration Reference
   A link to a TypeScript config file.
 
 The ``ts_sphinx_js_config`` file
-------------------------------
+--------------------------------
 
 This file should be a TypeScript module. It's executed in a context where it can
 import ``typedoc`` and ``sphinx_js``. These functions take TypeDoc IR objects as
@@ -525,7 +524,7 @@ functions::
   destructured. If so, it's equivalent to putting a ``@destructure`` tag for the
   argument. For example:
 
-  .. code_block:: ts
+  .. code-block:: ts
 
     function shouldDestructureArg(param: ParameterReflection) {
       return param.name === "options";
@@ -546,7 +545,7 @@ functions::
   For example, this ``postConvert`` hook removes the constructor from classes marked with
   ``@hideconstructor``.
 
-  .. code_block:: ts
+  .. code-block:: ts
 
     function postConvert(app, project, typeDocToIRMap) {
       for (const [key, value] of typeDocToIRMap.entries()) {
@@ -558,18 +557,20 @@ functions::
 
   To use it, you'll also need to add a tag definition for ``@hideconstructor`` to your ``tsdoc.json`` file:
 
-  .. code_block:: json
+  .. code-block:: json
 
-    "tagDefinitions": [
-      {
-        "tagName": "@hideconstructor",
-        "syntaxKind": "modifier"
-      }
-    ]
+    {
+      "tagDefinitions": [
+        {
+          "tagName": "@hideconstructor",
+          "syntaxKind": "modifier"
+        }
+      ]
+    }
 
   This ``postConvert`` hook hides external attributes and functions from the documentation:
 
-  .. code_block:: ts
+  .. code-block:: ts
 
     function postConvert(app, project, typeDocToIRMap) {
       for (const [key, value] of typeDocToIRMap.entries()) {
@@ -610,7 +611,7 @@ For a TypeScript example, see `the Pyodide api docs
 Sphinx docs and now supports sphinx-js. Put this in the
 ``.readthedocs.yml`` file at the root of your repo:
 
-.. code_block:: yaml
+.. code-block:: yaml
 
     python:
       install:
@@ -653,14 +654,13 @@ Version History
 
 5.0.0: (Unreleased)
   * Dropped support for Python 3.9 (pyodide/sphinx-js-fork#7)
-  * Dropped support for typedoc 0.15, added support for typedoc 0.25--0.28
-   (pyodide/sphinx-js-fork#11, pyodide/sphinx-js-fork#22,
+  * Dropped support for typedoc 0.15, added support for typedoc 0.25--0.28 (
+    pyodide/sphinx-js-fork#11, pyodide/sphinx-js-fork#22,
     pyodide/sphinx-js-fork#31, pyodide/sphinx-js-fork#39,
     pyodide/sphinx-js-fork#41, pyodide/sphinx-js-fork#43
     pyodide/sphinx-js-fork#52, pyodide/sphinx-js-fork#53,
     pyodide/sphinx-js-fork#54, pyodide/sphinx-js-fork#174,
-    #266
-    )
+    #266)
   * Added handling for TypeScript type parameters and type bounds.
     (pyodide/sphinx-js-fork#25)
   * Only monkeypatch Sphinx classes when sphinx_js extension is used
@@ -671,17 +671,17 @@ Version History
     (pyodide/sphinx-js-fork#47)
   * Added support for destructuring the documentation of keyword arguments in
     TypeScript using the ``@destructure`` tag or the
-    ``shouldDestructureArg`` hook.
-    (pyodide/sphinx-js-fork#48, pyodide/sphinx-js-fork#74,
-     pyodide/sphinx-js-fork#75, pyodide/sphinx-js-fork#101,
-     pyodide/sphinx-js-fork#128)
-  * Added rendering for cross references in TypeScript types.
-    (pyodide/sphinx-js-fork#51, pyodide/sphinx-js-fork#56,
-     pyodide/sphinx-js-fork#67, pyodide/sphinx-js-fork#81,
-     pyodide/sphinx-js-fork#82, pyodide/sphinx-js-fork#83,
-     pyodide/sphinx-js-fork#153, pyodide/sphinx-js-fork#160)
-  * Added rendering for function types in TypeScript documentation.
-    (pyodide/sphinx-js-fork#55, pyodide/sphinx-js-fork#58,
+    ``shouldDestructureArg`` hook. (
+    pyodide/sphinx-js-fork#48, pyodide/sphinx-js-fork#74,
+    pyodide/sphinx-js-fork#75, pyodide/sphinx-js-fork#101,
+    pyodide/sphinx-js-fork#128)
+  * Added rendering for cross references in TypeScript types. (
+    pyodide/sphinx-js-fork#51, pyodide/sphinx-js-fork#56,
+    pyodide/sphinx-js-fork#67, pyodide/sphinx-js-fork#81,
+    pyodide/sphinx-js-fork#82, pyodide/sphinx-js-fork#83,
+    pyodide/sphinx-js-fork#153, pyodide/sphinx-js-fork#160)
+  * Added rendering for function types in TypeScript documentation. (
+    pyodide/sphinx-js-fork#55, pyodide/sphinx-js-fork#58,
     pyodide/sphinx-js-fork#59)
   * Add async prefix to async functions (pyodide/sphinx-js-fork#65).
   * Added the ``sphinx-js_type`` css class around all types in documentation. This
