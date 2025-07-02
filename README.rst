@@ -364,7 +364,6 @@ This directive documents all exports on a module. For example::
 
   .. js:automodule:: package.submodule
 
-
 autosummary
 -----------
 
@@ -477,6 +476,10 @@ Configuration Reference
   one. If there is more than one, ``root_for_relative_js_paths`` must be
   specified as well. Defaults to ``../``.
 
+``root_for_relative_js_paths``
+  Relative JS entity paths are resolved relative to this path. Defaults to
+  ``js_source_path`` if not present.
+
 ``jsdoc_config_path``
   A conf.py-relative path to a JSDoc config file, which is useful if you want to
   specify your own JSDoc options, like recursion and custom filename matching.
@@ -485,15 +488,91 @@ Configuration Reference
 ``jsdoc_tsconfig_path``
   If using TypeDoc, specify the path of ``tsconfig.json`` file
 
-``root_for_relative_js_paths``
-  Relative JS entity paths are resolved relative to this path. Defaults to
-  ``js_source_path`` if it is only one item.
+``ts_type_xref_formatter``
+  A function for formatting typescript type cross referenes. See the
+  "Typescript: Cross references" section below.
 
-``jsdoc_cache``
-  Path to a file where JSDoc output will be cached. If omitted, JSDoc will be
-  run every time Sphinx is. If you have a large number of source files, it may
-  help to configure this value. But be careful: the cache is not automatically
-  flushed if your source code changes; you must delete it manually.
+``ts_type_bold``
+  Make all typescript types bold if `true`.
+
+``ts_sphinx_js_config``
+  A link to a typescript config file.
+
+The `ts_sphinx_js_config` file
+------------------------------
+
+This file should be a typescript module. It's executed in a context where it can
+import `typedoc` and `sphinx_js`. These functions take TypeDoc IR objects as
+arguments. Since the TypeDoc IR is unstable, this config may often break when
+switching TypeDoc versions. However, these hooks are very powerful so using them
+may be worthwhile anyways. This API is experimental and may change in the
+future.
+
+For an example, you can see Pyodide's config file `here <shouldDestructureArg>`__.
+
+This file should export a config object with some of the three following
+functions::
+
+* ``shouldDestructureArg: (param: ParameterReflection) => boolean``
+
+  This function takes a ``ParameterReflection`` and decides if it should be
+  destructured. If so, it's equivalent to putting a `@destructure` tag for the
+  argument. For example:
+
+  .. code_block:: ts
+
+    function shouldDestructureArg(param: ParameterReflection) {
+      return param.name === "options";
+    }
+
+* ``preConvert?: (app: Application) => Promise<void>;``
+
+  This hook is called with the TypeDoc application as argument before the
+  typescript files are parsed. For example, it can be used to add extra TypeDoc
+  plugins.
+
+* ``postConvert: (app: Application, project: ProjectReflection, typeDocToIRMap: Map<DeclarationReflection, TopLevelIR>) => void``
+
+  This hook is called after the sphinx_js IR is created. It can be used to
+  modify the IR arbitrarily. It is very experimental and subject to breaking
+  changes.
+
+  For example, this ``postConvert`` hook removes the constructor from classes marked with
+  `@hideconstructor`.
+
+  .. code_block:: ts
+
+    function postConvert(app, project, typeDocToIRMap) {
+      for (const [key, value] of typeDocToIRMap.entries()) {
+        if (value.kind === "class" && value.modifier_tags.includes("@hideconstructor")) {
+          value.constructor_ = null;
+        }
+      }
+    }
+
+  To use it, you'll also need to add a tag defintion for `@hideconstructor` to your `tsdoc.json` file:
+
+  .. code_block:: json
+
+    "tagDefinitions": [
+      {
+        "tagName": "@hideconstructor",
+        "syntaxKind": "modifier"
+      }
+    ]
+
+  This ``postConvert`` hook hides external attributes and functions from the documentation:
+
+  .. code_block:: ts
+
+    function postConvert(app, project, typeDocToIRMap) {
+      for (const [key, value] of typeDocToIRMap.entries()) {
+        if (value.kind === "attribute" || value.kind === "function") {
+          value.is_private = key.flags.isExternal || key.flags.isPrivate;
+        }
+      }
+    }
+
 
 How sphinx-js finds typedoc / jsdoc
 -----------------------------------
@@ -518,25 +597,23 @@ documentation. A particularly juicy page is
 `<https://mozilla.github.io/fathom/ruleset.html>`__. Click the "View page
 source" link to see the raw directives.
 
-`ReadTheDocs <https://readthedocs.org/>`__ is the canonical hosting platform for
-Sphinx docs and now supports sphinx-js as an opt-in beta. Put this in the
-``.readthedocs.yml`` file at the root of your repo::
+For a typescript example, see `the Pyodide api docs
+<https://pyodide.org/en/stable/usage/api/js-api.html>`__.
 
-    requirements_file: docs/requirements.txt
-    build:
-      image: latest
+`ReadTheDocs <https://readthedocs.org/>`__ is the canonical hosting platform for
+Sphinx docs and now supports sphinx-js. Put this in the
+``.readthedocs.yml`` file at the root of your repo:
+
+.. code_block:: yaml
+
+    python:
+      install:
+        - requirements: docs/requirements.txt
 
 Then put the version of sphinx-js you want in ``docs/requirements.txt``. For
 example::
 
     sphinx-js==3.1.2
-
-Or, if you prefer, the Fathom repo carries a `Travis CI configuration
-<https://github.com/mozilla/fathom/blob/92304b8ad4768e90c167c3d93f9865771f5a6d80/.travis.yml#L41>`__
-and a `deployment script
-<https://github.com/mozilla/fathom/blob/92304b8ad4768e90c167c3d93f9865771f5a6d80/tooling/travis-deploy-docs>`__
-for building docs with sphinx-js and publishing them to GitHub Pages. Feel free
-to borrow them.
 
 Caveats
 =======
@@ -586,7 +663,7 @@ Version History
     (pyodide/sphinx-js-fork#47)
   * Added support for destructuring the documentation of keyword arguments in
     Typescript using the ``@destructure`` tag or the
-    ``ts_should_destructure_arg`` hook.
+    ``shouldDestructureArg`` hook.
     (pyodide/sphinx-js-fork#48, pyodide/sphinx-js-fork#74,
      pyodide/sphinx-js-fork#75, pyodide/sphinx-js-fork#101,
      pyodide/sphinx-js-fork#128)
