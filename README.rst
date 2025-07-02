@@ -442,10 +442,10 @@ or ``js:class`` and use the class's full (but dotted) path when you do::
 Unfortunately, Sphinx's ``~`` syntax doesn't work in these spots, so users will
 see the full paths in the documentation.
 
-Typescript: Cross references
+TypeScript: Cross references
 ----------------------------
 
-Typescript types will be converted to cross references. To render cross
+TypeScript types will be converted to cross references. To render cross
 references, you can define a hook in ``conf.py`` called ``ts_type_xref_formatter``. It
 should take two arguments: the first argument is the sphinx confix, and the
 second is an ``sphinx_js.ir.TypeXRef`` object. This has a ``name`` field and two
@@ -495,19 +495,19 @@ Configuration Reference
   If using TypeDoc, specify the path of ``tsconfig.json`` file
 
 ``ts_type_xref_formatter``
-  A function for formatting typescript type cross references. See the
-  "Typescript: Cross references" section below.
+  A function for formatting TypeScript type cross references. See the
+  "TypeScript: Cross references" section below.
 
 ``ts_type_bold``
-  Make all typescript types bold if ``true``.
+  Make all TypeScript types bold if ``true``.
 
 ``ts_sphinx_js_config``
-  A link to a typescript config file.
+  A link to a TypeScript config file.
 
 The ``ts_sphinx_js_config`` file
 ------------------------------
 
-This file should be a typescript module. It's executed in a context where it can
+This file should be a TypeScript module. It's executed in a context where it can
 import ``typedoc`` and ``sphinx_js``. These functions take TypeDoc IR objects as
 arguments. Since the TypeDoc IR is unstable, this config may often break when
 switching TypeDoc versions. However, these hooks are very powerful so using them
@@ -534,7 +534,7 @@ functions::
 * ``preConvert?: (app: Application) => Promise<void>;``
 
   This hook is called with the TypeDoc application as argument before the
-  typescript files are parsed. For example, it can be used to add extra TypeDoc
+  TypeScript files are parsed. For example, it can be used to add extra TypeDoc
   plugins.
 
 * ``postConvert: (app: Application, project: ProjectReflection, typeDocToIRMap: Map<DeclarationReflection, TopLevelIR>) => void``
@@ -603,7 +603,7 @@ documentation. A particularly juicy page is
 `<https://mozilla.github.io/fathom/ruleset.html>`__. Click the "View page
 source" link to see the raw directives.
 
-For a typescript example, see `the Pyodide api docs
+For a TypeScript example, see `the Pyodide api docs
 <https://pyodide.org/en/stable/usage/api/js-api.html>`__.
 
 `ReadTheDocs <https://readthedocs.org/>`__ is the canonical hosting platform for
@@ -661,7 +661,7 @@ Version History
     pyodide/sphinx-js-fork#54, pyodide/sphinx-js-fork#174,
     #266
     )
-  * Added handling for Typescript type parameters and type bounds.
+  * Added handling for TypeScript type parameters and type bounds.
     (pyodide/sphinx-js-fork#25)
   * Only monkeypatch Sphinx classes when sphinx_js extension is used
     (pyodide/sphinx-js-fork#27)
@@ -670,17 +670,17 @@ Version History
   * Handle markdown style codepens correctly in typedoc comments.
     (pyodide/sphinx-js-fork#47)
   * Added support for destructuring the documentation of keyword arguments in
-    Typescript using the ``@destructure`` tag or the
+    TypeScript using the ``@destructure`` tag or the
     ``shouldDestructureArg`` hook.
     (pyodide/sphinx-js-fork#48, pyodide/sphinx-js-fork#74,
      pyodide/sphinx-js-fork#75, pyodide/sphinx-js-fork#101,
      pyodide/sphinx-js-fork#128)
-  * Added rendering for cross references in Typescript types.
+  * Added rendering for cross references in TypeScript types.
     (pyodide/sphinx-js-fork#51, pyodide/sphinx-js-fork#56,
      pyodide/sphinx-js-fork#67, pyodide/sphinx-js-fork#81,
      pyodide/sphinx-js-fork#82, pyodide/sphinx-js-fork#83,
      pyodide/sphinx-js-fork#153, pyodide/sphinx-js-fork#160)
-  * Added rendering for function types in Typescript documentation.
+  * Added rendering for function types in TypeScript documentation.
     (pyodide/sphinx-js-fork#55, pyodide/sphinx-js-fork#58,
     pyodide/sphinx-js-fork#59)
   * Add async prefix to async functions (pyodide/sphinx-js-fork#65).
