@@ -1,8 +1,0 @@
--e .
-beautifulsoup4
-build
-nox
-pytest-cov
-recommonmark
-twine
-defusedxml
