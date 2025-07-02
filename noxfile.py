@@ -44,8 +44,6 @@ def test_typedoc(session: Session, typedoc: str) -> None:
             f"typedoc@{typedoc}",
             external=True,
         )
-        session.run("npx", "tsc", "--version", external=True)
-        session.run("npx", "typedoc", "--version", external=True)
         # Run typescript tests
         test_file = (PROJECT_ROOT / "tests/test.ts").resolve()
         register_import_hook = PROJECT_ROOT / "sphinx_js/js/registerImportHook.mjs"
@@ -55,6 +53,7 @@ def test_typedoc(session: Session, typedoc: str) -> None:
             dedent(
                 f"""\
                 #!/bin/sh
+                npx typedoc --version
                 TYPEDOC_NODE_MODULES={venvroot} node --import {register_import_hook} --import {node_modules/"tsx/dist/loader.mjs"} --test {test_file}
                 """
             )
