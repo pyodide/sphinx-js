@@ -25,7 +25,7 @@ def tests(session: Session) -> None:
     )
 
 
-def typecheck_ts(session: Session, typedoc: str):
+def typecheck_ts(session: Session, typedoc: str) -> None:
     if typedoc == "0.26":
         # Upstream type errors here =(
         return
