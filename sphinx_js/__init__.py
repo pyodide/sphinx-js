@@ -51,19 +51,22 @@ def setup(app: Sphinx) -> None:
     app.add_config_value(
         "js_source_path", default=["../"], rebuild="env", types=[str, list]
     )
-    app.add_config_value("jsdoc_config_path", default=None, rebuild="env")
-    app.add_config_value("jsdoc_tsconfig_path", default=None, rebuild="env")
-    app.add_config_value("ts_type_xref_formatter", None, "env")
-    app.add_config_value("ts_type_bold", False, "env")
-    app.add_config_value("ts_sphinx_js_config", None, "env")
-    app.add_css_file(SPHINX_JS_CSS)
-    app.connect("build-finished", on_build_finished)
 
     # We could use a callable as the "default" param here, but then we would
     # have had to duplicate or build framework around the logic that promotes
     # js_source_path to a list and calls abspath() on it. It's simpler this way
     # until we need to access js_source_path from more than one place.
     app.add_config_value("root_for_relative_js_paths", None, "env")
+
+    app.add_config_value("jsdoc_config_path", default=None, rebuild="env")
+    app.add_config_value("jsdoc_tsconfig_path", default=None, rebuild="env")
+
+    app.add_config_value("ts_type_xref_formatter", None, "env")
+    app.add_config_value("ts_type_bold", False, "env")
+    app.add_config_value("ts_sphinx_js_config", None, "env")
+
+    app.add_css_file(SPHINX_JS_CSS)
+    app.connect("build-finished", on_build_finished)
 
 
 def analyze(app: Sphinx) -> None:
