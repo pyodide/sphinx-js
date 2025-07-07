@@ -58,7 +58,7 @@ P = ParamSpec("P")
 
 
 def cache_to_file(
-    get_filename: Callable[..., str | None]
+    get_filename: Callable[..., str | None],
 ) -> Callable[[Callable[P, T]], Callable[P, T]]:
     """Return a decorator that will cache the result of ``get_filename()`` to a
     file

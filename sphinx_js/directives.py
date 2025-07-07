@@ -7,6 +7,7 @@ JSDoc output, via closure. The renderer classes, able to be top-level classes,
 can access each other and collaborate.
 
 """
+
 import re
 from collections.abc import Iterable
 from functools import cache

@@ -619,21 +619,25 @@ class AutoClassRenderer(JsRenderer):
             exported_from=obj.exported_from,
             class_comment=render_description(obj.description),
             is_abstract=isinstance(obj, Class) and obj.is_abstract,
-            interfaces=[self.render_type(x) for x in obj.interfaces]
-            if isinstance(obj, Class)
-            else [],
+            interfaces=(
+                [self.render_type(x) for x in obj.interfaces]
+                if isinstance(obj, Class)
+                else []
+            ),
             is_interface=isinstance(obj, Interface),
             supers=[self.render_type(x) for x in obj.supers],
             constructor_comment=render_description(constructor.description),
             content="\n".join(self._content),
-            members=self._members_of(
-                obj,
-                include=self._options["members"],
-                exclude=self._options.get("exclude-members", set()),
-                should_include_private="private-members" in self._options,
-            )
-            if "members" in self._options
-            else "",
+            members=(
+                self._members_of(
+                    obj,
+                    include=self._options["members"],
+                    exclude=self._options.get("exclude-members", set()),
+                    should_include_private="private-members" in self._options,
+                )
+                if "members" in self._options
+                else ""
+            ),
         )
 
     def _members_of(
