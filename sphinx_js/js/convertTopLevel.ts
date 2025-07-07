@@ -254,13 +254,16 @@ class PathComputer implements ReflectionVisitor {
  */
 function renderCommentContent(content: CommentDisplayPart[]): Description {
   return content.map((x): DescriptionItem => {
-    if (x.kind === "code") {
-      return { type: "code", code: x.text };
+    switch(x.kind) {
+      case "code":
+        return { type: "code", code: x.text };
+      case "text":
+        return { type: "text", text: x.text };
+      case "inline-tag":
+        return { type: "text", text: x.text };
+      case "relative-link":
+        return { type: "text", text: x.text };
     }
-    if (x.kind === "text") {
-      return { type: "text", text: x.text };
-    }
-    throw new Error("Not implemented");
   });
 }
 
