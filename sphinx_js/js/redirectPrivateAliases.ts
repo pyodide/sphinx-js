@@ -167,7 +167,11 @@ export function redirectPrivateTypes(app: Application): ReadonlySymbolToType {
 
       const missing = discoverMissingExports(mod, context);
       for (const name of missing) {
-        const decl = name.declarations![0];
+        // Some symbols e.g. JSX.LibraryManagedAttributes have no declarations
+        if (!name.declarations || name.declarations.length === 0) {
+          continue;
+        }
+        const decl = name.declarations[0];
         if (decl.getSourceFile().fileName.includes("node_modules")) {
           continue;
         }
