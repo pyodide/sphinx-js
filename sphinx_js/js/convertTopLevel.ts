@@ -254,7 +254,7 @@ class PathComputer implements ReflectionVisitor {
  */
 function renderCommentContent(content: CommentDisplayPart[]): Description {
   return content.map((x): DescriptionItem => {
-    switch(x.kind) {
+    switch (x.kind) {
       case "code":
         return { type: "code", code: x.text };
       case "text":
