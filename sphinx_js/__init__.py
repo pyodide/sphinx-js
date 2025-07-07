@@ -80,9 +80,11 @@ def analyze(app: Sphinx) -> None:
     )
     abs_source_paths = [normpath(join(app.confdir, path)) for path in source_paths]
     root_for_relative_paths = root_or_fallback(
-        normpath(join(app.confdir, app.config.root_for_relative_js_paths))
-        if app.config.root_for_relative_js_paths
-        else None,
+        (
+            normpath(join(app.confdir, app.config.root_for_relative_js_paths))
+            if app.config.root_for_relative_js_paths
+            else None
+        ),
         abs_source_paths,
     )
 
