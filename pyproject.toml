@@ -31,6 +31,7 @@ keywords = [
     "typescript",
 ]
 classifiers = [
+    "Framework :: Sphinx :: Domain",
     "Framework :: Sphinx :: Extension",
     "Intended Audience :: Developers",
     "Natural Language :: English",
