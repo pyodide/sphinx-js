@@ -14,7 +14,7 @@ def tests(session: Session) -> None:
     (venvroot / "node_modules").mkdir()
     with session.chdir(venvroot):
         session.run(
-            "npm", "i", "--no-save", "jsdoc@4.0.0", "typedoc@0.25", external=True
+            "npm", "i", "--no-save", "jsdoc@4.0.4", "typedoc@0.25", external=True
         )
     session.run(
         "pytest",
@@ -53,7 +53,7 @@ def test_typedoc(session: Session, typedoc: str) -> None:
             "i",
             "--no-save",
             "tsx",
-            "jsdoc@4.0.0",
+            "jsdoc@4.0.4",
             f"typedoc@{typedoc}",
             external=True,
         )
@@ -86,6 +86,6 @@ def test_sphinx_6(session: Session) -> None:
     (venvroot / "node_modules").mkdir()
     with session.chdir(venvroot):
         session.run(
-            "npm", "i", "--no-save", "jsdoc@4.0.0", "typedoc@0.25", external=True
+            "npm", "i", "--no-save", "jsdoc@4.0.4", "typedoc@0.25", external=True
         )
     session.run("pytest", "--junitxml=test-results.xml", "-k", "not js")
