@@ -14,7 +14,7 @@ def tests(session: Session) -> None:
     (venvroot / "node_modules").mkdir()
     with session.chdir(venvroot):
         session.run(
-            "npm", "i", "--no-save", "jsdoc@4.0.0", "typedoc@0.25", external=True
+            "npm", "i", "--no-save", "jsdoc@4.0.4", "typedoc@0.25", external=True
         )
     session.run(
         "pytest",
