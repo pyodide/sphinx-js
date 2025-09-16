@@ -472,7 +472,7 @@ Things to note:
 
 Behind the scenes, sphinx-js will change all separators to dots so that:
 
-- Sphinx's "shortening" syntax works: `:func:`~InwardRhs.atMost``prints as
+- Sphinx's "shortening" syntax works: ":func:\`~InwardRhs.atMost\`" prints as
 merely`atMost()`. (For now, you should always use dots rather than other
 namepath separators: `#~`.)
 - Sphinx indexes more informatively, saying methods belong to their classes.
@@ -581,7 +581,7 @@ For an example, you can see Pyodide's config file [here](shouldDestructureArg).
 This file should export a config object with some of the three following
 functions:
 
-### `shouldDestructureArg: (param: ParameterReflection) => boolean`
+- `shouldDestructureArg: (param: ParameterReflection) => boolean`
 
 This function takes a `ParameterReflection` and decides if it should be
 destructured. If so, it's equivalent to putting a `@destructure` tag for the
@@ -593,13 +593,13 @@ function shouldDestructureArg(param: ParameterReflection) {
 }
 ```
 
-### `preConvert?: (app: Application) => Promise<void>;`
+- `preConvert?: (app: Application) => Promise<void>;`
 
 This hook is called with the TypeDoc application as argument before the
 TypeScript files are parsed. For example, it can be used to add extra TypeDoc
 plugins.
 
-### `postConvert: (app: Application, project: ProjectReflection, typeDocToIRMap: Map<DeclarationReflection, TopLevelIR>) => void`
+- `postConvert: (app: Application, project: ProjectReflection, typeDocToIRMap: Map<DeclarationReflection, TopLevelIR>) => void`
 
 This hook is called after the sphinx_js IR is created. It can be used to
 modify the IR arbitrarily. It is very experimental and subject to breaking
