@@ -165,10 +165,12 @@ First, document your JS code using standard JSDoc formatting:
  * @returns {Number} Types and descriptions are both supported.
  */
 function linkDensity(node) {
-    const length = node.flavors.get('paragraphish').inlineLength;
-    const lengthWithoutLinks = inlineTextLength(node.element,
-                                                element => element.tagName !== 'A');
-    return (length - lengthWithoutLinks) / length;
+  const length = node.flavors.get("paragraphish").inlineLength;
+  const lengthWithoutLinks = inlineTextLength(
+    node.element,
+    (element) => element.tagName !== "A",
+  );
+  return (length - lengthWithoutLinks) / length;
 }
 ```
 
@@ -203,7 +205,7 @@ Parameter properties and destructuring parameters also work fine, using
  *     ``jpeg`` or ``webp`` (from ``0.00`` to ``1.00``)
  */
 function saveCanvas({ format, quality }) {
-    // ...
+  // ...
 }
 ```
 
@@ -220,7 +222,12 @@ with a few caveats:
  * @param [bool]
  * @param [nil]
  */
-function defaultsDocumentedInCode(num=5, str="true", bool=true, nil=null) {}
+function defaultsDocumentedInCode(
+  num = 5,
+  str = "true",
+  bool = true,
+  nil = null,
+) {}
 
 /**
  * JSDoc guesses types for things like "42". If you have a string-typed
@@ -367,12 +374,12 @@ This is useful for documenting public properties:
 
 ```javascript
 class Fnode {
-    constructor(element) {
-        /**
-         * The raw DOM element this wrapper describes
-         */
-        this.element = element;
-    }
+  constructor(element) {
+    /**
+     * The raw DOM element this wrapper describes
+     */
+    this.element = element;
+  }
 }
 ```
 
@@ -390,14 +397,14 @@ document only one of your getter/setter pair:
 
 ```javascript
 class Bing {
-    /** The bong of the bing */
-    get bong() {
-        return this._bong;
-    }
+  /** The bong of the bing */
+  get bong() {
+    return this._bong;
+  }
 
-    set bong(newBong) {
-        this._bong = newBong * 2;
-    }
+  set bong(newBong) {
+    this._bong = newBong * 2;
+  }
 }
 ```
 
@@ -449,9 +456,9 @@ some/file.SomeClass#someInstanceMethod.staticMethod~innerMember
 
 Things to note:
 
-* We use simple file paths rather than JSDoc's `module:` prefix or TypeDoc's
+- We use simple file paths rather than JSDoc's `module:` prefix or TypeDoc's
   `external:` or `module:` ones.
-* We use simple backslash escaping exclusively rather than switching escaping
+- We use simple backslash escaping exclusively rather than switching escaping
   schemes halfway through the path; JSDoc itself [is headed that way as well](https://github.com/jsdoc3/jsdoc/issues/876). The characters that need to
   be escaped are `#.~(/`, though you do not need to escape the dots in a
   leading `./` or `../`. A really horrible path might be:
@@ -460,15 +467,15 @@ Things to note:
   some/path\ with\ spaces/file.topLevelObject#instanceMember.staticMember\(with\(parens
   ```
 
-* Relative paths are relative to the `js_source_path` specified in the
+- Relative paths are relative to the `js_source_path` specified in the
   config. Absolute paths are not allowed.
 
 Behind the scenes, sphinx-js will change all separators to dots so that:
 
-* Sphinx's "shortening" syntax works: `:func:`~InwardRhs.atMost`` prints as
-  merely `atMost()`. (For now, you should always use dots rather than other
-  namepath separators: `#~`.)
-* Sphinx indexes more informatively, saying methods belong to their classes.
+- Sphinx's "shortening" syntax works: `:func:`~InwardRhs.atMost``prints as
+merely`atMost()`. (For now, you should always use dots rather than other
+namepath separators: `#~`.)
+- Sphinx indexes more informatively, saying methods belong to their classes.
 
 ## Saving Keystrokes By Setting The Primary Domain
 
@@ -501,8 +508,8 @@ should take two arguments: the first argument is the sphinx confix, and the
 second is an `sphinx_js.ir.TypeXRef` object. This has a `name` field and two
 variants:
 
-* a `sphinx_js.ir.TypeXRefInternal` with fields `path` and `kind`
-* a `sphinx_js.ir.TypeXRefExternal` with fields `name`, `package`,
+- a `sphinx_js.ir.TypeXRefInternal` with fields `path` and `kind`
+- a `sphinx_js.ir.TypeXRefExternal` with fields `name`, `package`,
   `sourcefilename` and `qualifiedName`
 
 The return value should be restructured text that you wish to be inserted in
@@ -521,35 +528,43 @@ def ts_xref_formatter(config, xref):
 ## Configuration Reference
 
 ### `js_language`
+
 Use 'javascript' or 'typescript' depending on the language you use. The
 default is 'javascript'.
 
 ### `js_source_path`
+
 A list of directories to scan (non-recursively) for JS or TS source files,
 relative to Sphinx's conf.py file. Can be a string instead if there is only
 one. If there is more than one, `root_for_relative_js_paths` must be
 specified as well. Defaults to `../`.
 
 ### `root_for_relative_js_paths`
+
 Relative JS entity paths are resolved relative to this path. Defaults to
 `js_source_path` if not present.
 
 ### `jsdoc_config_path`
+
 A conf.py-relative path to a JSDoc config file, which is useful if you want to
 specify your own JSDoc options, like recursion and custom filename matching.
 If using TypeDoc, you can also point to a `typedoc.json` file.
 
 ### `jsdoc_tsconfig_path`
+
 If using TypeDoc, specify the path of `tsconfig.json` file
 
 ### `ts_type_xref_formatter`
+
 A function for formatting TypeScript type cross references. See the
 "TypeScript: Cross references" section below.
 
 ### `ts_type_bold`
+
 Make all TypeScript types bold if `true`.
 
 ### `ts_sphinx_js_config`
+
 A link to a TypeScript config file.
 
 ## The `ts_sphinx_js_config` file
@@ -596,7 +611,10 @@ For example, this `postConvert` hook removes the constructor from classes marked
 ```typescript
 function postConvert(app, project, typeDocToIRMap) {
   for (const [key, value] of typeDocToIRMap.entries()) {
-    if (value.kind === "class" && value.modifier_tags.includes("@hideconstructor")) {
+    if (
+      value.kind === "class" &&
+      value.modifier_tags.includes("@hideconstructor")
+    ) {
       value.constructor_ = null;
     }
   }
@@ -670,12 +688,12 @@ sphinx-js==3.1.2
 
 ## Caveats
 
-* We don't understand the inline JSDoc constructs like `{@link foo}`; you
+- We don't understand the inline JSDoc constructs like `{@link foo}`; you
   have to use Sphinx-style equivalents for now, like `:js:func:`foo`` (or
-  simply `:func:`foo`` if you have set `primary_domain = 'js'` in conf.py.
-* So far, we understand and convert the JSDoc block tags `@param`,
+simply `:func:`foo`` if you have set `primary_domain = 'js'` in conf.py.
+- So far, we understand and convert the JSDoc block tags `@param`,
   `@returns`, `@throws`, `@example` (without the optional `<caption>`),
-  `@deprecated`, `@see`, and their synonyms. Other ones will go *poof* into
+  `@deprecated`, `@see`, and their synonyms. Other ones will go _poof_ into
   the ether.
 
 ## Tests
