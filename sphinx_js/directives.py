@@ -7,6 +7,7 @@ JSDoc output, via closure. The renderer classes, able to be top-level classes,
 can access each other and collaborate.
 
 """
+
 import re
 from collections.abc import Iterable
 from functools import cache
@@ -66,7 +67,15 @@ def _members_to_exclude(arg: str | None) -> set[str]:
     return set(a.strip() for a in (arg or "").split(","))
 
 
-def sphinx_js_type_role(role, rawtext, text, lineno, inliner, options=None, content=None):  # type: ignore[no-untyped-def]
+def sphinx_js_type_role(  # type: ignore[no-untyped-def]
+    role,
+    rawtext,
+    text,
+    lineno,
+    inliner,
+    options=None,
+    content=None,
+):
     """
     The body should be escaped rst. This renders its body as rst and wraps the
     result in <span class="sphinx_js-type"> </span>
@@ -285,7 +294,7 @@ def html5_visit_desc_js_type_parameter_list(
         return self._visit_sig_parameter_list(node, addnodes.desc_parameter, "<", ">")
     # Sphinx <7
     self.body.append('<span class="sig-paren">&lt;</span>')
-    self.first_param = 1
+    self.first_param = 1  # type:ignore[attr-defined]
     self.optional_param_level = 0
     # How many required parameters are left.
     self.required_params_left = sum(
