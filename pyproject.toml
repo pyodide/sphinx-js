@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "sphinx-js"
 description = "Support for using Sphinx on JSDoc-documented JS code"
-readme = "README.rst"
+readme = "README.md"
 license = {text = "MIT"}
 authors = [
     {name = "Hood Chatham", email = "roberthoodchatham@gmail.com"},
@@ -67,7 +67,7 @@ include = [
     "/LICENSE",
     "/requirements_dev.txt",
     "/noxfile.py",
-    "/README.rst",
+    "/README.md",
 ]
 
 [tool.hatch.build.targets.wheel]
