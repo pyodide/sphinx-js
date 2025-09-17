@@ -43,8 +43,18 @@ export class ExportedClass {
 export class ConstructorlessClass {}
 
 export interface OptionalThings {
+  /**
+   * foop should preserve this documentation
+   */
   foop?(): void;
+  /**
+   * boop should preserve this documentation
+   */
   boop?: boolean;
+  /**
+   * noop should preserve this documentation
+   */
+  noop?: () => void;
 }
 
 /**

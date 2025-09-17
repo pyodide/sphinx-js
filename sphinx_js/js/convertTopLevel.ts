@@ -537,7 +537,18 @@ export class Converter {
       // Render {f: () => void} like {f(): void}
       // TODO: unclear if this is the right behavior. Maybe there should be a
       // way to pick?
-      return [this.functionToIR(prop.type.declaration), []];
+      const functionIR = this.functionToIR(prop.type.declaration);
+
+      // Preserve the property's own documentation if it exists
+      const propertyDescription = renderCommentSummary(prop.comment);
+      if (propertyDescription.length > 0) {
+        functionIR.description = propertyDescription;
+      }
+
+      // Preserve the optional flag from the original property
+      functionIR.is_optional = prop.flags.isOptional;
+
+      return [functionIR, []];
     }
     let type: Type;
     if (prop.comment?.modifierTags.has("@hidetype")) {
