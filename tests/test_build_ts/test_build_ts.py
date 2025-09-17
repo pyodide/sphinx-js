@@ -75,7 +75,7 @@ class TestTextBuilder(SphinxBuildTestCase):
         """
         self._file_contents_eq(
             "autoclass_exported",
-            "class ExportedClass()\n" "\n" '   *exported from* "class"\n',
+            'class ExportedClass()\n\n   *exported from* "class"\n',
         )
 
     def test_constructorless_class(self):

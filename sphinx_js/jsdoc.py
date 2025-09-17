@@ -4,6 +4,7 @@ Analyzers run jsdoc or typedoc or whatever, squirrel away their output, and
 then lazily constitute IR objects as requested.
 
 """
+
 import pathlib
 import subprocess
 from collections import defaultdict
@@ -175,9 +176,10 @@ class Analyzer:
             kind = member_doclet.get("kind")
             member_full_path = full_path_segments(member_doclet, self._base_dir)
             # Typedefs should still fit into function-shaped holes:
-            doclet_as_whatever: Callable[[Doclet, list[str]], Function] | Callable[
-                [Doclet, list[str]], Attribute
-            ] = (
+            doclet_as_whatever: (
+                Callable[[Doclet, list[str]], Function]
+                | Callable[[Doclet, list[str]], Attribute]
+            ) = (
                 self._doclet_as_function
                 if (kind == "function" or kind == "typedef")
                 else self._doclet_as_attribute

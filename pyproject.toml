@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "sphinx-js"
 description = "Support for using Sphinx on JSDoc-documented JS code"
-readme = "README.rst"
+readme = "README.md"
 license = {text = "MIT"}
 authors = [
     {name = "Hood Chatham", email = "roberthoodchatham@gmail.com"},
@@ -67,7 +67,7 @@ include = [
     "/LICENSE",
     "/requirements_dev.txt",
     "/noxfile.py",
-    "/README.rst",
+    "/README.md",
 ]
 
 [tool.hatch.build.targets.wheel]
@@ -102,7 +102,7 @@ disallow_untyped_calls = false
 
 
 [tool.ruff]
-select = [
+lint.select = [
   "E",     # pycodestyles
   "W",     # pycodestyles
   "F",     # pyflakes
@@ -113,8 +113,5 @@ select = [
   "I",     # isort
   "PGH",   # pygrep-hooks
 ]
-ignore = ["E402", "E501", "E731", "E741", "B904", "B020"]
+lint.ignore = ["E402", "E501", "E731", "E741", "B904", "B020", "UP031"]
 target-version = "py310"
-
-[tool.ruff.flake8-bugbear]
-extend-immutable-calls = ["typer.Argument", "typer.Option"]
