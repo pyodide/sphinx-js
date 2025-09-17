@@ -540,10 +540,7 @@ export class Converter {
       const functionIR = this.functionToIR(prop.type.declaration);
 
       // Preserve the property's own documentation if it exists
-      const propertyDescription = renderCommentSummary(prop.comment);
-      if (propertyDescription.length > 0) {
-        functionIR.description = propertyDescription;
-      }
+      functionIR.description = renderCommentSummary(prop.comment);
 
       // Preserve the optional flag from the original property
       functionIR.is_optional = prop.flags.isOptional;
