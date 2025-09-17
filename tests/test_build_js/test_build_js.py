@@ -109,7 +109,7 @@ class Tests(SphinxBuildTestCase):
         """Make sure variadic parameters are rendered as ellipses."""
         self._file_contents_eq(
             "autofunction_variadic",
-            "variadicParameter(a, ...args)\n\n" "   Variadic parameter\n",
+            "variadicParameter(a, ...args)\n\n   Variadic parameter\n",
         )
 
     def test_autofunction_deprecated(self):

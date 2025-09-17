@@ -67,7 +67,7 @@ def test_typedoc(session: Session, typedoc: str) -> None:
                 f"""\
                 #!/bin/sh
                 npx typedoc --version
-                TYPEDOC_NODE_MODULES={venvroot} node --import {register_import_hook} --import {node_modules/"tsx/dist/loader.mjs"} --test {test_file}
+                TYPEDOC_NODE_MODULES={venvroot} node --import {register_import_hook} --import {node_modules / "tsx/dist/loader.mjs"} --test {test_file}
                 """
             )
         )
