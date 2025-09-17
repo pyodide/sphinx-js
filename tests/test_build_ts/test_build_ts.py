@@ -98,7 +98,15 @@ class TestTextBuilder(SphinxBuildTestCase):
             "\n"
             "      type: boolean\n"
             "\n"
-            "   OptionalThings.foop?()\n",
+            "      boop should preserve this documentation\n"
+            "\n"
+            "   OptionalThings.foop?()\n"
+            "\n"
+            "      foop should preserve this documentation\n"
+            "\n"
+            "   OptionalThings.noop?()\n"
+            "\n"
+            "      noop should preserve this documentation\n",
         )
 
     def test_deprecated(self):

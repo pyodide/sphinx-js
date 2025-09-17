@@ -1,5 +1,9 @@
 ## Changelog
 
+### 5.0.1: (September 17th, 2025)
+- Fixed a bug that comment of the arrow function in the interface is not rendered correctly.
+  (pyodide/sphinx-js#284)
+
 ### 5.0.0: (July 2nd, 2025)
 
 - Dropped support for Python 3.9 (pyodide/sphinx-js-fork#7)
