@@ -2,7 +2,7 @@ default_language_version:
   python: "3.12"
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: "v4.4.0"
+    rev: "v6.0.0"
     hooks:
       - id: check-added-large-files
       - id: check-case-conflict
@@ -16,14 +16,14 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.9.1"
+    rev: "v0.13.3"
     hooks:
       - id: ruff
         args: [--fix]
       - id: ruff-format
 
   - repo: https://github.com/biomejs/pre-commit
-    rev: "v0.6.1"
+    rev: "v2.2.5"
     hooks:
       - id: biome-format
         additional_dependencies: ["@biomejs/biome@2.1.1"]
@@ -37,12 +37,12 @@ repos:
         additional_dependencies: ["rstcheck[sphinx,toml]"]
 
   - repo: https://github.com/codespell-project/codespell
-    rev: "v2.2.5"
+    rev: "v2.4.1"
     hooks:
       - id: codespell
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: "v1.5.1"
+    rev: "v1.18.2"
     hooks:
       - id: mypy
         exclude: (tests/)
