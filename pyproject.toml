@@ -15,7 +15,7 @@ dependencies = [
     "attrs",
     "cattrs<25.1",
     "Jinja2>2.0",
-    "markupsafe==3.0.2",
+    "markupsafe",
     "parsimonious>=0.10.0,<0.11.0",
     "Sphinx>=4.1.0",
 ]
