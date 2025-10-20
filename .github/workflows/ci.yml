@@ -20,10 +20,10 @@ jobs:
 
     name: Python ${{ matrix.python-version}}
     steps:
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@v5
 
       - name: Set up Python
-        uses: actions/setup-python@v5.3.0
+        uses: actions/setup-python@v6.0.0
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -36,7 +36,7 @@ jobs:
         run: nox -s tests-${{ matrix.python-version }}
 
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
@@ -59,15 +59,15 @@ jobs:
 
     name: Python ${{ matrix.python-version}} + typedoc ${{ matrix.typedoc-version }}
     steps:
-      - uses: actions/checkout@v3.1.0
+      - uses: actions/checkout@v5
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 22
 
       - name: Set up Python
-        uses: actions/setup-python@v4.3.0
+        uses: actions/setup-python@v6.0.0
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -97,10 +97,10 @@ jobs:
 
     name: Test sphinx 6
     steps:
-      - uses: actions/checkout@v3.1.0
+      - uses: actions/checkout@v5
 
       - name: Set up Python
-        uses: actions/setup-python@v4.3.0
+        uses: actions/setup-python@v6.0.0
         with:
           python-version: ${{ matrix.python-version }}
 

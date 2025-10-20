@@ -13,7 +13,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: dorny/test-reporter@v1.6.0
+      - uses: dorny/test-reporter@v2.1.1
         with:
           artifact: test-results-${{ matrix.python-version }}
           name: Test report - ${{ matrix.python-version }}
@@ -28,7 +28,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: dorny/test-reporter@v1.6.0
+      - uses: dorny/test-reporter@v2.1.1
         with:
           artifact: test_typedoc-results-${{ matrix.python-version }}-${{ matrix.typedoc-version }}
           name: Test report - Python ${{ matrix.python-version}} + typedoc ${{ matrix.typedoc-version }}
@@ -43,7 +43,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: dorny/test-reporter@v1.6.0
+      - uses: dorny/test-reporter@v2.1.1
         with:
           artifact: test_sphinx_6-${{ matrix.python-version }}
           name: Test report - Sphinx 6
