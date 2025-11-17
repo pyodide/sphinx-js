@@ -40,7 +40,7 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         if: success() || failure()
         with:
           name: test-results-${{ matrix.python-version }}
@@ -78,7 +78,7 @@ jobs:
       - name: Test
         run: nox -s "test_typedoc-${{ matrix.python-version }}(typedoc='${{ matrix.typedoc-version }}')"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         if: success() || failure()
         with:
           name: test_typedoc-results-${{ matrix.python-version }}-${{ matrix.typedoc-version }}
@@ -111,7 +111,7 @@ jobs:
       - name: Test
         run: nox -s "test_sphinx_6-${{ matrix.python-version }}"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         if: success() || failure()
         with:
           name: test_sphinx_6-${{ matrix.python-version }}
