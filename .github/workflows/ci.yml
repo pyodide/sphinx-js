@@ -20,7 +20,7 @@ jobs:
 
     name: Python ${{ matrix.python-version}}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Set up Python
         uses: actions/setup-python@v6.0.0
@@ -59,7 +59,7 @@ jobs:
 
     name: Python ${{ matrix.python-version}} + typedoc ${{ matrix.typedoc-version }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Set up Node
         uses: actions/setup-node@v6
@@ -97,7 +97,7 @@ jobs:
 
     name: Test sphinx 6
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Set up Python
         uses: actions/setup-python@v6.0.0
