@@ -8,7 +8,7 @@ jobs:
     if: false
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.1
       - name: Get diff lines
         id: diff
         uses: Equip-Collaboration/diff-line-numbers@v1.1.0
