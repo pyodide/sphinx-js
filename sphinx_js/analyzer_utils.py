@@ -14,6 +14,14 @@ from sphinx.errors import SphinxError
 def program_name_on_this_platform(program: str) -> str:
     """Return the name of the executable file on the current platform, given a
     command name with no extension."""
+
+    if os.access(program, os.X_OK):
+        return program
+
+    path = shutil.which(program)
+    if path and os.access(path, os.X_OK):
+        return path
+
     return program + ".cmd" if os.name == "nt" else program
 
 
