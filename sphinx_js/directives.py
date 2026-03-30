@@ -19,7 +19,6 @@ from docutils.nodes import Node
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import Parser as RstParser
 from docutils.parsers.rst.directives import flag
-from docutils.utils import new_document
 from sphinx import addnodes
 from sphinx.addnodes import desc_signature
 from sphinx.application import Sphinx
@@ -44,6 +43,7 @@ from .renderers import (
     AutoModuleRenderer,
     AutoSummaryRenderer,
     Renderer,
+    new_document_from_parent,
 )
 
 
@@ -81,8 +81,15 @@ def sphinx_js_type_role(  # type: ignore[no-untyped-def]
     result in <span class="sphinx_js-type"> </span>
     """
     unescaped = unescape(text)
-    doc = new_document("", inliner.document.settings)
-    RstParser().parse(unescaped, doc)
+    parent_doc = inliner.document
+    source = parent_doc.get("source", "")
+    # Get line number stored by new_document_from_parent in rst_nodes if we can
+    # find it, otherwise use lineno of directive.
+    line = getattr(parent_doc, "sphinx_js_source_line", None) or lineno
+    doc = new_document_from_parent(source, parent_doc)
+    # Prepend newlines so errors report correct line number
+    padded = "\n" * (line - 1) + unescaped
+    RstParser().parse(padded, doc)
     n = nodes.inline(text)
     n["classes"].append("sphinx_js-type")
     n += doc.children[0].children
