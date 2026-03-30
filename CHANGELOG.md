@@ -1,5 +1,15 @@
 ## Changelog
 
+### 5.0.3: (March 30th, 2026)
+
+- Test Python 3.14 in CI (#302)
+- Fix compatibility with sphinx 9 (#301)
+- Fix: Errors generated from invalid xrefs should fail build (#300)
+
+### 5.0.2: (October 17th, 2025)
+
+- Unpin markupsafe by @fmhoeger (#287)
+
 ### 5.0.1: (September 17th, 2025)
 - Fixed a bug that comment of the arrow function in the interface is not rendered correctly.
   (pyodide/sphinx-js#284)
