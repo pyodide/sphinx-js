@@ -12,6 +12,7 @@ from docutils.statemachine import StringList
 from docutils.utils import new_document
 from jinja2 import Environment, PackageLoader
 from sphinx import addnodes
+from sphinx import version_info as sphinx_version_info
 from sphinx.application import Sphinx
 from sphinx.config import Config
 from sphinx.errors import SphinxError
@@ -778,8 +779,16 @@ class AutoSummaryRenderer(Renderer):
         # extract_summary seems to have trouble if there are Sphinx
         # directives in descr
         descr, _, _ = descr.partition("\n..")
+        document = self._directive.state.document
+        # In Sphinx 9.x, extract_summary takes document.settings directly
+        # instead of the document object.
+        doc_or_settings: Any
+        if sphinx_version_info >= (9, 0):
+            doc_or_settings = document.settings
+        else:
+            doc_or_settings = document
         return extract_summary(
-            [descr.replace(":", colon_esc)], self._directive.state.document
+            [descr.replace(":", colon_esc)], doc_or_settings
         ).replace(colon_esc, ":")
 
     def get_sig(self, obj: TopLevel) -> str:

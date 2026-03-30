@@ -5,7 +5,11 @@ from pathlib import Path
 
 import pytest
 from sphinx.environment import CONFIG_NEW, CONFIG_OK
-from sphinx.testing.util import strip_escseq
+
+try:
+    from sphinx.util.console import strip_colors
+except ImportError:
+    from sphinx.testing.util import strip_escseq as strip_colors
 
 
 def build(app):
@@ -36,7 +40,7 @@ def build(app):
         app.disconnect(doctree_resolved_id)
 
     return (
-        strip_escseq(app._status.getvalue()),
+        strip_colors(app._status.getvalue()),
         list(sorted(reads)),
         list(sorted(writes)),
     )
