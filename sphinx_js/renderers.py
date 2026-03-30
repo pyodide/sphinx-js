@@ -9,7 +9,6 @@ from docutils.nodes import Node
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import Parser as RstParser
 from docutils.statemachine import StringList
-from docutils.utils import new_document
 from jinja2 import Environment, PackageLoader
 from sphinx import addnodes
 from sphinx import version_info as sphinx_version_info
@@ -50,6 +49,19 @@ from .typedoc import Analyzer as TsAnalyzer
 Analyzer = TsAnalyzer | JsAnalyzer
 
 logger = logging.getLogger(__name__)
+
+
+def new_document_from_parent(
+    source_path: str, parent_doc: nodes.document, line: int | None = None
+) -> nodes.document:
+    """Create a new document that inherits the parent's settings and reporter."""
+    settings = parent_doc.settings
+    reporter = parent_doc.reporter
+    doc = nodes.document(settings, reporter, source=source_path)
+    doc.note_source(source_path, -1)
+    # Store line number for sphinx_js_type_role to use
+    doc.sphinx_js_source_line = line  # type: ignore[attr-defined]
+    return doc
 
 
 def sort_attributes_first_then_by_path(obj: TopLevel) -> Any:
@@ -325,13 +337,12 @@ class JsRenderer(Renderer):
         )
 
         # Parse the RST into docutils nodes with a fresh doc, and return
-        # them.
-        #
-        # Not sure if passing the settings from the "real" doc is the right
-        # thing to do here:
-        doc = new_document(
-            f"{obj.filename}:{obj.path}({obj.line})",
-            settings=self._directive.state.document.settings,
+        # them. Use the directive's source location for error messages.
+        source, line = self._directive.state_machine.get_source_and_line(
+            self._directive.lineno
+        )
+        doc = new_document_from_parent(
+            source or "", self._directive.state.document, line
         )
         RstParser().parse(rst, doc)
         return doc.children
