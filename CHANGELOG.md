@@ -1,5 +1,9 @@
 ## Changelog
 
+### Unreleased
+
+- Dropped support for Python 3.10; minimum supported version is now Python 3.11
+
 ### 5.0.3: (March 30th, 2026)
 
 - Test Python 3.14 in CI (#302)

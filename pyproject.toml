@@ -10,7 +10,7 @@ license = {text = "MIT"}
 authors = [
     {name = "Hood Chatham", email = "roberthoodchatham@gmail.com"},
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
     "attrs",
     "cattrs<25.1",
@@ -75,7 +75,7 @@ include = [
 packages = ["sphinx_js"]
 
 [tool.mypy]
-python_version = "3.10"
+python_version = "3.11"
 show_error_codes = true
 warn_unreachable = true
 enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
@@ -115,4 +115,4 @@ lint.select = [
   "PGH",   # pygrep-hooks
 ]
 lint.ignore = ["E402", "E501", "E731", "E741", "B904", "B020", "UP031"]
-target-version = "py310"
+target-version = "py311"
