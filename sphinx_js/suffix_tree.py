@@ -46,9 +46,7 @@ class SuffixTree(Generic[T]):
         else:
             tree["value"] = value
 
-    def add_many(
-        self, segments_and_values: Iterable[tuple[Sequence[str], T]]
-    ) -> None:
+    def add_many(self, segments_and_values: Iterable[tuple[Sequence[str], T]]) -> None:
         """Add a batch of items to the tree all at once, and collect any
         errors.
 
