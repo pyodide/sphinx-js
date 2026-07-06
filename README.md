@@ -473,7 +473,7 @@ Things to note:
 Behind the scenes, sphinx-js will change all separators to dots so that:
 
 - Sphinx's "shortening" syntax works: ":func:\`~InwardRhs.atMost\`" prints as
-  merely`atMost()`. (For now, you should always use dots rather than other
+  merely `atMost()`. (For now, you should always use dots rather than other
   namepath separators: `#~`.)
 - Sphinx indexes more informatively, saying methods belong to their classes.
 

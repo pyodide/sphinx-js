@@ -147,7 +147,7 @@ mariusschenzle, Erik Rose, lonnen, and Will Kahn-Greene!
 
 - No longer show args in the arg list that are utterly uninformative, lacking
   both description and type info.
-- Class attributes are now listed before methods unless manally ordered with
+- Class attributes are now listed before methods unless manually ordered with
   `:members:`.
 
 ### 3.0.1: (August 10th, 2020)

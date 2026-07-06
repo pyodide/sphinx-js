@@ -131,7 +131,7 @@ class _Member:
     class or interface"""
 
     #: Whether this member is required to be provided by a subclass of a class
-    #: or implementor of an interface
+    #: or implementer of an interface
     is_abstract: bool
     #: Whether this member is optional in the TypeScript sense of being allowed
     #: on but not required of an object to conform to a type
