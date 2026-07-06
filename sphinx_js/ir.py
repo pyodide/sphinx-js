@@ -28,8 +28,10 @@ This has to match js/ir.ts
 from collections.abc import Callable, Sequence
 from typing import Any, Literal, ParamSpec, TypeVar
 
+import attrs
 import cattrs
 from attrs import Factory, define, field
+from cattrs.strategies import configure_tagged_union
 
 from .analyzer_utils import dotted_path
 
@@ -339,6 +341,14 @@ class TypeAlias(TopLevel):
 
 TopLevelUnion = Class | Interface | Function | Attribute | TypeAlias
 
+# Resolve string forward references (e.g. ``list["Attribute"]``) in the
+# annotations of our attrs classes.
+for _cls in list(globals().values()):
+    if isinstance(_cls, type) and attrs.has(_cls):
+        attrs.resolve_types(_cls)
+
+del _cls
+
 # Now make a serializer/deserializer.
 # TODO: Add tests to make sure that serialization and deserialization are a
 # round trip.
@@ -379,12 +389,20 @@ def structure_description(x: Any, _: Any) -> Description | bool:
     return converter.structure(x, list[DescriptionItem])
 
 
-def get_type_literal(t: type[DescriptionText]) -> str:
+def get_field_literal(t: type, field_name: str) -> str:
+    """Take the "blah" from a ``Literal`` type annotation like
+
+    field_name: Literal["blah"]
+    """
+    return t.__annotations__[field_name].__args__[0]  # type:ignore[no-any-return]
+
+
+def get_type_literal(t: type) -> str:
     """Take the "blah" from the type annotation in
 
     type: Literal["blah"]
     """
-    return t.__annotations__["type"].__args__[0]  # type:ignore[no-any-return]
+    return get_field_literal(t, "type")
 
 
 description_type_map = {
@@ -417,3 +435,42 @@ def structure_str_or_nodefault(x: Any, _: Any) -> str | _NoDefault:
     if isinstance(x, str):
         return x
     return NO_DEFAULT
+
+
+# Before cattrs version 25.2, it structured ``Sequence`` fields into lists,
+# afterwards it structures into tuples. Explicitly destructure to list so the
+# result is consistent across cattrs versions.
+def structure_description_sequence(x: Any, _: Any) -> list[Description]:
+    return [converter.structure(e, Description) for e in x]  # type:ignore[arg-type]
+
+
+converter.register_structure_hook_func(
+    lambda t: t == Sequence[Description],
+    structure_description_sequence,
+)
+
+
+# Configure tagged-union strategies for the unions we serialize. Each member
+# class carries a ``Literal`` discriminator field whose value we use as the tag:
+# ``type`` for TypeXRef and ``kind`` for the TopLevel unions. These are
+# configured last so that the custom structure hooks for the member fields (e.g.
+# Type, Description) are already registered, since ``configure_tagged_union``
+# eagerly resolves the hooks for each member class.
+configure_tagged_union(
+    TypeXRef,
+    converter,
+    tag_name="type",
+    tag_generator=lambda cl: get_field_literal(cl, "type"),
+)
+configure_tagged_union(
+    Function | Attribute,
+    converter,
+    tag_name="kind",
+    tag_generator=lambda cl: get_field_literal(cl, "kind"),
+)
+configure_tagged_union(
+    TopLevelUnion,
+    converter,
+    tag_name="kind",
+    tag_generator=lambda cl: get_field_literal(cl, "kind"),
+)

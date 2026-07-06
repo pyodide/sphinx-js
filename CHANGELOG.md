@@ -3,6 +3,8 @@
 ### Unreleased
 
 - Dropped support for Python 3.10; minimum supported version is now Python 3.11
+  (#310)
+- Fixed compatibility with cattrs >= 25 (#303)
 
 ### 5.0.3: (March 30th, 2026)
 
