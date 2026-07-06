@@ -1,6 +1,5 @@
 from collections.abc import Iterable, Sequence
 from typing import (
-    Any,
     Generic,
     TypedDict,
     TypeVar,
@@ -9,10 +8,9 @@ from typing import (
 T = TypeVar("T")
 
 
-# In Python 3.10: Cannot inherit from TypedDict and Generic.
-class _Tree(TypedDict, total=False):
-    value: Any
-    subtree: dict[str, "_Tree"]
+class _Tree(TypedDict, Generic[T], total=False):
+    value: T
+    subtree: dict[str, "_Tree[T]"]
 
 
 class SuffixTree(Generic[T]):
@@ -24,13 +22,13 @@ class SuffixTree(Generic[T]):
     def __init__(self) -> None:
         #: Internal structure is like... ::
         #:
-        #:     Tree = {value?: Any,
+        #:     Tree = {value?: T,
         #:             subtree?: {segmentFoo: Tree, segmentBar: Tree, ...}}
         #
         #: A Tree can have a value key, a subtree key, or both. Subtree dicts
         #: always have at least 1 key. Every subtree has at least one value,
         #: directly or indirectly. ``self._tree`` itself is a Tree.
-        self._tree: _Tree = {}
+        self._tree: _Tree[T] = {}
 
     def add(self, unambiguous_segments: Sequence[str], value: T) -> None:
         """Add an item to the tree.
@@ -49,7 +47,7 @@ class SuffixTree(Generic[T]):
             tree["value"] = value
 
     def add_many(
-        self, segments_and_values: Iterable[tuple[Sequence[str], Any]]
+        self, segments_and_values: Iterable[tuple[Sequence[str], T]]
     ) -> None:
         """Add a batch of items to the tree all at once, and collect any
         errors.
