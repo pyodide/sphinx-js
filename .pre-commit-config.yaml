@@ -16,28 +16,28 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.15.20"
+    rev: "v0.16.10"
     hooks:
       - id: ruff
         args: [--fix]
       - id: ruff-format
 
   - repo: https://github.com/biomejs/pre-commit
-    rev: "v2.5.2"
+    rev: "v2.5.15"
     hooks:
       - id: biome-format
         additional_dependencies: ["@biomejs/biome@2.1.1"]
         types_or: [javascript, ts]
 
   - repo: https://github.com/rstcheck/rstcheck
-    rev: "v6.2.5"
+    rev: "v6.3.0"
     hooks:
       - id: rstcheck
         exclude: (tests/|sphinx_js/templates)
         additional_dependencies: ["rstcheck[sphinx,toml]"]
 
   - repo: https://github.com/codespell-project/codespell
-    rev: "v2.4.2"
+    rev: "v2.4.3"
     hooks:
       - id: codespell
         exclude: package-lock.json
@@ -48,7 +48,7 @@ repos:
           ]
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: "v2.1.0"
+    rev: "v2.4.0"
     hooks:
       - id: mypy
         exclude: (tests/)
