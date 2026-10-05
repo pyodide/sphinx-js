@@ -96,13 +96,13 @@ and emitting all the type information you would expect.
    to `extensions`:
 
    ```python
-   extensions = ['sphinx_js']
+   extensions = ["sphinx_js"]
    ```
 
 5. If you want to document TypeScript, add:
 
    ```python
-   js_language = 'typescript'
+   js_language = "typescript"
    ```
 
    to `conf.py` as well.
@@ -110,7 +110,7 @@ and emitting all the type information you would expect.
 6. If your JS source code is anywhere but at the root of your project, add:
 
    ```python
-   js_source_path = '../somewhere/else'
+   js_source_path = "../somewhere/else"
    ```
 
    on a line by itself in `conf.py`. The root of your JS source tree should be
@@ -122,7 +122,7 @@ and emitting all the type information you would expect.
 7. If you have special JSDoc or TypeDoc configuration, add:
 
    ```python
-   jsdoc_config_path = '../conf.json'
+   jsdoc_config_path = "../conf.json"
    ```
 
    to `conf.py` as well.
@@ -131,7 +131,7 @@ and emitting all the type information you would expect.
    set your "primary domain" to JS in `conf.py`:
 
    ```python
-   primary_domain = 'js'
+   primary_domain = "js"
    ```
 
    The domain is `js` even if you're writing TypeScript. Then you can omit
@@ -482,7 +482,7 @@ Behind the scenes, sphinx-js will change all separators to dots so that:
 To save some keystrokes, you can set:
 
 ```python
-primary_domain = 'js'
+primary_domain = "js"
 ```
 
 in `conf.py` and then use `autofunction` rather than `js:autofunction`.
