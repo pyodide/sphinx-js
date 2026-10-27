@@ -8,15 +8,15 @@ jobs:
     if: false
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Get diff lines
         id: diff
-        uses: Equip-Collaboration/diff-line-numbers@v1.1.0
+        uses: Equip-Collaboration/diff-line-numbers@e752977e2cb4207d671bb9e4dad18c07c1b73d52 # v1.1.0
         with:
           include: '["\\.ts$"]'
       - name: Detecting files changed
         id: files
-        uses: umani/changed-files@v4.2.0
+        uses: umani/changed-files@138acc60bcaa548e0c194fc69ed36321ee8466d2 # v4.2.0
         with:
           repo-token: ${{ github.token }}
           pattern: '^.*\.ts$'
@@ -25,7 +25,7 @@ jobs:
           echo 'Files modified: ${{steps.files.outputs.files_updated}}'
           echo 'Files added: ${{steps.files.outputs.files_created}}'
           echo 'Files removed: ${{steps.files.outputs.files_deleted}}'
-      - uses: Arhia/action-check-typescript@v1.1.0
+      - uses: Arhia/action-check-typescript@0e25ee8039f7f92080a6bea8b3d60fa4ab70acb2 # v1.1.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           use-check: true
